@@ -20,7 +20,7 @@ current_month = datetime.datetime.now().strftime("%B")
 today = datetime.datetime.now()
 today_str = today.strftime("%d-%m-%Y")
 
-st.title("Bharat")
+st.title("Energy Monitoring System")
 
 # ==============================
 # USER INPUTS
@@ -200,6 +200,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
