@@ -164,7 +164,8 @@ if st.button("Submit"):
          df.to_excel(writer, sheet_name=current_month, index=False, startrow=1)
 st.success("Data Saved Successfully ✅")
 st.subheader("Updated Data Preview")
-st.dataframe(def)
+st.dataframe(df)
+
 
 
 
