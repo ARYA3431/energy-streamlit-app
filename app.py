@@ -8,7 +8,13 @@ from openpyxl import load_workbook
 # BASIC SETTINGS
 # ==============================
 
-FILE_NAME = "Energy Sheet.xlsx"
+FILE_NAME = "/tmp/Energy Sheet.xlsx"
+SOURCE_FILE = "Energy Sheet.xlsx"
+
+import shutil
+
+if not os.path.exists(FILE_NAME):
+    shutil.copy(SOURCE_FILE, FILE_NAME)
 
 current_month = datetime.datetime.now().strftime("%B")
 today = datetime.datetime.now()
@@ -165,6 +171,7 @@ if st.button("Submit"):
 st.success("Data Saved Successfully ✅")
 #st.subheader("Updated Data Preview")
 #st.dataframe(df)
+
 
 
 
