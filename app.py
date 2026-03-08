@@ -107,15 +107,16 @@ if st.button("Submit"):
     # CALCULATIONS
     # ==============================
 
-    total_consumption = tr1 + tr2 + tr3 + tr4 + tr5
-    total_lf = lhf1 + lhf2
-    total_lcp = lcp1 + lcp3
-    total_lcss9 = lcss9_1 + lcss9_2 + lcss9_3
-    total_lcss8 = lcss8_1 + lcss8_2 + lcss8_3
-    total_caster = total_lcss8 + total_lcss9 + ccm1 + ccm2 + grinder
-    total_rcph = rcph1 + rcph2
-    total_bof = total_consumption - (total_lcp + total_caster)
-    total_id_fan = pid1 + pid2 + sid1 + sid2 + sid3
+    total_consumption = sum(tr_values.values())
+    total_lf = sum(lhf_values.values())
+    total_lcp = sum(lcp_values.values())
+    total_lcss9 = sum(lcss9_values.values())
+    total_lcss8 = sum(lcss8_values.values())
+    total_rcph = sum(rcph_values.values())
+    total_id_fan = sum(fan_values.values())
+    grinder = other_values["Grinder I/C Caster"]
+    ccm1 = ccm_values["CCM-1 EMS-1"]
+    ccm2 = ccm_values["CCM-1 EMS-2"]
 
     # ==============================
     # FUNCTION TO UPDATE VALUE
@@ -198,6 +199,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
