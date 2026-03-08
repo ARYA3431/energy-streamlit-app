@@ -140,39 +140,7 @@ if st.button("Submit"):
     # UPDATE EQUIPMENT VALUES
     # ==============================
 
-    update_value("TR-1 (31.5 MVA)",TR-1 (31.5 MVA))
-    update_value("TR-2 (31.5 MVA)", tr2)
-    update_value("TR-3 (31.5 MVA)", tr3)
-    update_value("TR-4 (31.5 MVA)", tr4)
-    update_value("TR-5 (31.5 MVA)", tr5)
-
-    update_value("LHF#1 - TR (44 MVA)", lhf1)
-    update_value("LHF#2 - TR (44 MVA)", lhf2)
-
-    update_value("LCP FDR-1 (FDR33)", lcp1)
-    update_value("LCP FDR-3 (FDR12)", lcp3)
-
-    update_value("LCSS-9 FDR-1", lcss9_1)
-    update_value("LCSS-9 FDR-2", lcss9_2)
-    update_value("LCSS-9 FDR-3", lcss9_3)
-
-    update_value("LCSS-8 FDR-1", lcss8_1)
-    update_value("LCSS-8 FDR-2", lcss8_2)
-    update_value("LCSS-8 FDR-3", lcss8_3)
-
-    update_value("CCM-1 EMS-1", ccm1)
-    update_value("CCM-1 EMS-2", ccm2)
-
-    update_value("Primary ID Fan #1", pid1)
-    update_value("Primary ID Fan #2", pid2)
-    update_value("Secondary ID Fan #1", sid1)
-    update_value("Secondary ID Fan #2", sid2)
-    update_value("Secondary ID Fan #3", sid3)
-
-    update_value("RCPH I/C-1 (FDR14)", rcph1)
-    update_value("RCPH I/C-2 (FDR27)", rcph2)
-
-    update_value("Grinder I/C Caster (FDR36)", grinder)
+    
 
     # ==============================
     # UPDATE TOTALS
@@ -199,6 +167,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
