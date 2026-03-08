@@ -28,39 +28,64 @@ st.title("Energy Monitoring System")
 
 st.header("Enter Meter Readings")
 
-tr1 = st.number_input("TR-1 (31.5 MVA)", step=1.0)
-tr2 = st.number_input("TR-2 (31.5 MVA)", step=1.0)
-tr3 = st.number_input("TR-3 (31.5 MVA)", step=1.0)
-tr4 = st.number_input("TR-4 (31.5 MVA)", step=1.0)
-tr5 = st.number_input("TR-5 (31.5 MVA)", step=1.0)
+def input_grid(labels):
+    values = {}
+    for i in range(0, len(labels), 3):
+        cols = st.columns(3)
+        for j, label in enumerate(labels[i:i+3]):
+            with cols[j]:
+                values[label] = st.number_input(label, step=1.0, key=label)
+    return values
 
-lhf1 = st.number_input("LHF-1 (44 MVA)", step=1.0)
-lhf2 = st.number_input("LHF-2 (44 MVA)", step=1.0)
 
-lcp1 = st.number_input("LCP FDR-1", step=1.0)
-lcp3 = st.number_input("LCP FDR-3", step=1.0)
+tr_labels = [
+"TR-1 (31.5 MVA)", "TR-2 (31.5 MVA)", "TR-3 (31.5 MVA)",
+"TR-4 (31.5 MVA)", "TR-5 (31.5 MVA)"
+]
 
-lcss9_1 = st.number_input("LCSS-9 FDR-1", step=1.0)
-lcss9_2 = st.number_input("LCSS-9 FDR-2", step=1.0)
-lcss9_3 = st.number_input("LCSS-9 FDR-3", step=1.0)
+lhf_labels = [
+"LHF-1 (44 MVA)", "LHF-2 (44 MVA)"
+]
 
-lcss8_1 = st.number_input("LCSS-8 FDR-1", step=1.0)
-lcss8_2 = st.number_input("LCSS-8 FDR-2", step=1.0)
-lcss8_3 = st.number_input("LCSS-8 FDR-3", step=1.0)
+lcp_labels = [
+"LCP FDR-1", "LCP FDR-3"
+]
 
-ccm1 = st.number_input("CCM-1 EMS-1", step=1.0)
-ccm2 = st.number_input("CCM-1 EMS-2", step=1.0)
+lcss9_labels = [
+"LCSS-9 FDR-1", "LCSS-9 FDR-2", "LCSS-9 FDR-3"
+]
 
-pid1 = st.number_input("Primary ID Fan #1", step=1.0)
-pid2 = st.number_input("Primary ID Fan #2", step=1.0)
-sid1 = st.number_input("Secondary ID Fan #1", step=1.0)
-sid2 = st.number_input("Secondary ID Fan #2", step=1.0)
-sid3 = st.number_input("Secondary ID Fan #3", step=1.0)
+lcss8_labels = [
+"LCSS-8 FDR-1", "LCSS-8 FDR-2", "LCSS-8 FDR-3"
+]
 
-rcph1 = st.number_input("RCPH I/C-1", step=1.0)
-rcph2 = st.number_input("RCPH I/C-2", step=1.0)
+ccm_labels = [
+"CCM-1 EMS-1", "CCM-1 EMS-2"
+]
 
-grinder = st.number_input("Grinder I/C Caster", step=1.0)
+fan_labels = [
+"Primary ID Fan #1", "Primary ID Fan #2",
+"Secondary ID Fan #1", "Secondary ID Fan #2", "Secondary ID Fan #3"
+]
+
+rcph_labels = [
+"RCPH I/C-1", "RCPH I/C-2"
+]
+
+other_labels = [
+"Grinder I/C Caster"
+]
+
+
+tr_values = input_grid(tr_labels)
+lhf_values = input_grid(lhf_labels)
+lcp_values = input_grid(lcp_labels)
+lcss9_values = input_grid(lcss9_labels)
+lcss8_values = input_grid(lcss8_labels)
+ccm_values = input_grid(ccm_labels)
+fan_values = input_grid(fan_labels)
+rcph_values = input_grid(rcph_labels)
+other_values = input_grid(other_labels)
 
 # ==============================
 # SUBMIT BUTTON
@@ -173,6 +198,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
