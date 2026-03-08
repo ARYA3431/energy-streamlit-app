@@ -140,7 +140,7 @@ if st.button("Submit"):
     # UPDATE EQUIPMENT VALUES
     # ==============================
 
-    update_value("TR-1 (31.5 MVA)", tr1)
+    update_value("TR-1 (31.5 MVA)",TR-1 (31.5 MVA))
     update_value("TR-2 (31.5 MVA)", tr2)
     update_value("TR-3 (31.5 MVA)", tr3)
     update_value("TR-4 (31.5 MVA)", tr4)
@@ -199,6 +199,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
