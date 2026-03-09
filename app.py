@@ -112,6 +112,7 @@ if st.button("Submit"):
     total_lcp = sum(lcp_values.values())
     total_lcss9 = sum(lcss9_values.values())
     total_lcss8 = sum(lcss8_values.values())
+    total_caster = total_lcss8 + total_lcss9
     total_rcph = sum(rcph_values.values())
     total_id_fan = sum(fan_values.values())
     grinder = other_values["Grinder I/C Caster"]
@@ -167,6 +168,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
