@@ -118,6 +118,7 @@ if st.button("Submit"):
     grinder = other_values["Grinder I/C Caster"]
     ccm1 = ccm_values["CCM-1 EMS-1"]
     ccm2 = ccm_values["CCM-1 EMS-2"]
+    total_bof = total_consumption - total_caster
 
     # ==============================
     # FUNCTION TO UPDATE VALUE
@@ -168,6 +169,7 @@ if st.button("Submit"):
 
     st.subheader("Updated Data Preview")
     st.dataframe(df)
+
 
 
 
