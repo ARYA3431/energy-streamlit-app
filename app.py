@@ -158,8 +158,14 @@ if st.button("Submit"):
     df.columns = new_cols
 
     # Convert values to numeric (fix 1970 issue)
+    # Convert values to numeric
     for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # ✅ CLEAN DATA
+    df = df.fillna("")                      # remove None
+    df = df[df.iloc[:, 1] != ""]            # remove blank rows
+    df = df.dropna(how="all")               # remove empty rows
 
     st.success("Data Saved Successfully ✅")
 
