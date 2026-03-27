@@ -108,7 +108,7 @@ if st.button("Submit"):
         ws.cell(row=2, column=col_index).value = today_str
 
     # UPDATE FUNCTION
-   def update_excel(name, value):
+    def update_excel(name, value):
         for row in range(4, ws.max_row + 1):
 
             col1 = str(ws.cell(row=row, column=1).value or "").strip()
