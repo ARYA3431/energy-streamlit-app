@@ -125,6 +125,9 @@ if st.button("Submit"):
     update_excel("TR-5 (31.5 MVA)", tr_values["TR-5 (31.5 MVA)"])
 
     # SAVE
+    # Force Excel to recalculate formulas when opened
+    wb.calculation.fullCalcOnLoad = True
+
     wb.save(FILE_NAME)
 
     # READ DATA
