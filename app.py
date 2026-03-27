@@ -175,8 +175,8 @@ st.dataframe(df, use_container_width=True)
     # ==============================
 
     with open(FILE_NAME, "rb") as file:
-        st.download_button(
-            label="📥 Download Updated Excel",
-            data=file,
-            file_name="Energy Sheet.xlsx"
+    st.download_button(
+        label="📥 Download Updated Excel",
+        data=file,
+        file_name="Energy Sheet.xlsx"
         )
