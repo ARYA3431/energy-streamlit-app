@@ -86,6 +86,28 @@ other_values = input_grid(other_labels)
 
 # ✅ HEAT INPUT
 heat_values = input_grid(heat_labels)
+# ==============================
+# CALCULATIONS
+# ==============================
+
+total_tr = sum(tr_values.values())
+
+total_lf = sum(lhf_values.values())
+
+total_lcp = sum(lcp_values.values())
+
+total_lcss9 = sum(lcss9_values.values())
+total_lcss8 = sum(lcss8_values.values())
+
+total_ccm = sum(ccm_values.values())
+
+grinder = other_values["Grinder I/C Caster"]
+
+total_caster = total_lcss8 + total_lcss9 + total_ccm + grinder
+
+total_bof = total_tr - total_lcp - total_caster
+
+total_rcph = sum(rcph_values.values())
 
 # ==============================
 # SUBMIT BUTTON
