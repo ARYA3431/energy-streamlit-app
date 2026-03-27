@@ -95,7 +95,7 @@ if st.button("Submit"):
 
     # UPDATE FUNCTION
     def update_excel(name, value):
-    for row in range(4, ws.max_row + 1):
+        for row in range(4, ws.max_row + 1):
         cell_name = ws.cell(row=row, column=2).value
 
         # 🚫 Skip TOTAL or formula rows
