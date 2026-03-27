@@ -152,10 +152,13 @@ if st.button("Submit"):
     update_excel("TOTAL CONSUMPTION", total_consumption)
 
     # Save workbook (VERY IMPORTANT)
+    # Save workbook
     wb.save(FILE_NAME)
 
-    st.success("Data Saved Successfully ✅")
+    # Read updated data for display
+    df = pd.read_excel(FILE_NAME, sheet_name=current_month)
 
+    st.success("Data Saved Successfully ✅")
     st.subheader("📊 Full Energy Data (Live)")
     st.dataframe(df, use_container_width=True)
-
+    
