@@ -174,7 +174,7 @@ st.dataframe(df, use_container_width=True)
     # DOWNLOAD BUTTON
     # ==============================
 
-    with open(FILE_NAME, "rb") as file:
+with open(FILE_NAME, "rb") as file:
     st.download_button(
         label="📥 Download Updated Excel",
         data=file,
