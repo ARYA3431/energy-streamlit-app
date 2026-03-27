@@ -109,6 +109,13 @@ total_bof = total_tr - total_lcp - total_caster
 
 total_rcph = sum(rcph_values.values())
 
+update_excel("Total", total_tr)
+update_excel("TOTAL LF CONSUMPTION", total_lf)
+update_excel("TOTAL LCP CONSUMPTION", total_lcp)
+update_excel("TOTAL CASTER CONSUMPTION", total_caster)
+update_excel("TOTAL BOF CONSUMPTION", total_bof)
+update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
+
 # ==============================
 # SUBMIT BUTTON
 # ==============================
