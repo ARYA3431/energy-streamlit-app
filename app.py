@@ -10,12 +10,7 @@ from openpyxl import load_workbook
 
 FILE_NAME = "Energy Sheet.xlsx"
 SOURCE_FILE = "Energy Sheet.xlsx"
-df = pd.read_excel(FILE_NAME, sheet_name=current_month, dtype=object)
 
-# 🔥 FIX: Convert all date columns to numeric
-for col in df.columns[2:]:
-    df[col] = pd.to_numeric(df[col], errors='coerce')
-    
 import shutil
 
 if not os.path.exists(FILE_NAME):
@@ -158,12 +153,16 @@ if st.button("Submit"):
 
     # Save workbook (VERY IMPORTANT)
     # Save workbook
+    # After saving Excel
     wb.save(FILE_NAME)
 
-    # Read updated data for display
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month)
+    # ✅ NOW read file (correct position)
+    df = pd.read_excel(FILE_NAME, sheet_name=current_month, dtype=object)
+
+    # Convert values to numeric
+    for col in df.columns[2:]:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
     st.success("Data Saved Successfully ✅")
     st.subheader("📊 Full Energy Data (Live)")
     st.dataframe(df, use_container_width=True)
-    
