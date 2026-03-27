@@ -95,11 +95,17 @@ if st.button("Submit"):
 
     # UPDATE FUNCTION
     def update_excel(name, value):
-        for row in range(4, ws.max_row + 1):
-            if ws.cell(row=row, column=2).value == name:
-                ws.cell(row=row, column=col_index).value = int(value)
-                return
+    for row in range(4, ws.max_row + 1):
+        cell_name = ws.cell(row=row, column=2).value
 
+        # 🚫 Skip TOTAL or formula rows
+        if "TOTAL" in str(cell_name).upper():
+            continue
+
+        if cell_name == name:
+            ws.cell(row=row, column=col_index).value = int(value)
+            return
+            
     # CALCULATIONS
     total_consumption = sum(tr_values.values())
     total_lf = sum(lhf_values.values())
