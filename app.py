@@ -76,7 +76,7 @@ other_values = input_grid(other_labels)
 
 if st.button("Submit"):
 
-    wb = load_workbook(FILE_NAME)
+    wb = load_workbook(FILE_NAME, data_only=False)
     ws = wb[current_month]
 
     # FIND TODAY COLUMN
@@ -129,6 +129,11 @@ if st.button("Submit"):
 
     # READ DATA
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
+    wb_data = load_workbook(FILE_NAME, data_only=True)
+    ws_data = wb_data[current_month]
+
+    data = list(ws_data.values)
+    df = pd.DataFrame(data[1:], columns=data[1])
 
     # FIX COLUMN NAMES
     new_cols = list(df.columns[:2])
