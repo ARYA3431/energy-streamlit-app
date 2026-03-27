@@ -90,7 +90,7 @@ heat_values = input_grid(heat_labels)
 # CALCULATIONS
 # ==============================
 
-#total_tr = sum(tr_values.values())
+total_tr = sum(tr_values.values())
 
 total_lf = sum(lhf_values.values())
 
