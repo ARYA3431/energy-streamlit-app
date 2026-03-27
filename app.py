@@ -146,7 +146,10 @@ if st.button("Submit"):
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
     # Fix column names (dates)
-    new_cols = list(df.columns[:2])
+    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
+
+# Fix column names (dates)
+new_cols = list(df.columns[:2])
 
 for col in df.columns[2:]:
     try:
@@ -157,19 +160,15 @@ for col in df.columns[2:]:
 
 df.columns = new_cols
 
-    # Convert values to numeric (fix 1970 issue)
-    # Convert values to numeric
+# Convert values properly
 for col in df.columns[2:]:
-    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype("Int64")
-    # ✅ CLEAN DATA
-    df = df.fillna("")                      # remove None
-    df = df.dropna(how="all")               # remove empty rows
+    df[col] = pd.to_numeric(df[col], errors='coerce').astype("Int64")
 
+# Only fill blanks (do NOT delete rows)
+df = df.fillna("")
 
-    st.success("Data Saved Successfully ✅")
-
-    st.subheader("📊 Full Energy Data (Live)")
-    st.dataframe(df, use_container_width=True)
+st.subheader("📊 Full Energy Data (Live)")
+st.dataframe(df, use_container_width=True)
 
     # ==============================
     # DOWNLOAD BUTTON
