@@ -104,7 +104,7 @@ if st.button("Submit"):
 
             if cell_name == name:
                 ws.cell(row=row, column=col_index).value = int(value)
-            return
+                return
             
     # CALCULATIONS
     total_consumption = sum(tr_values.values())
