@@ -10,7 +10,7 @@ from openpyxl import load_workbook
 
 FILE_NAME = "Energy Sheet.xlsx"
 SOURCE_FILE = "Energy Sheet.xlsx"
-df = pd.read_excel(FILE_NAME, sheet_name=current_month)
+df = pd.read_excel(FILE_NAME, sheet_name=current_month, dtype=object)
 
 # 🔥 FIX: Convert all date columns to numeric
 for col in df.columns[2:]:
