@@ -79,10 +79,7 @@ if st.button("Submit"):
     wb = load_workbook(FILE_NAME)
     ws = wb[current_month]
 
-    # ==============================
-    # FIND TODAY COLUMN (STRING MATCH)
-    # ==============================
-
+    # FIND TODAY COLUMN
     col_index = None
 
     for col in range(3, ws.max_column + 1):
@@ -92,25 +89,18 @@ if st.button("Submit"):
             col_index = col
             break
 
-    # If today's column not found → create new
     if col_index is None:
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
 
-    # ==============================
     # UPDATE FUNCTION
-    # ==============================
-
     def update_excel(name, value):
         for row in range(4, ws.max_row + 1):
             if ws.cell(row=row, column=2).value == name:
                 ws.cell(row=row, column=col_index).value = int(value)
                 return
 
-    # ==============================
     # CALCULATIONS
-    # ==============================
-
     total_consumption = sum(tr_values.values())
     total_lf = sum(lhf_values.values())
     total_lcp = sum(lcp_values.values())
@@ -121,10 +111,7 @@ if st.button("Submit"):
     total_id_fan = sum(fan_values.values())
     total_bof = total_consumption - total_caster
 
-    # ==============================
     # UPDATE VALUES
-    # ==============================
-
     update_excel("TR-1 (31.5 MVA)", tr_values["TR-1 (31.5 MVA)"])
     update_excel("TR-2 (31.5 MVA)", tr_values["TR-2 (31.5 MVA)"])
     update_excel("TR-3 (31.5 MVA)", tr_values["TR-3 (31.5 MVA)"])
@@ -133,49 +120,45 @@ if st.button("Submit"):
 
     update_excel("TOTAL CONSUMPTION", total_consumption)
 
-    # ==============================
-    # SAVE FILE
-    # ==============================
-
+    # SAVE
     wb.save(FILE_NAME)
 
-    # ==============================
-    # READ + CLEAN DATA FOR DISPLAY
-    # ==============================
-
+    # READ DATA
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
-    # Fix column names (dates)
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
+    # FIX COLUMN NAMES
+    new_cols = list(df.columns[:2])
+    for col in df.columns[2:]:
+        try:
+            new_col = pd.to_datetime(col).strftime("%d-%m-%Y")
+        except:
+            new_col = col
+        new_cols.append(new_col)
 
-# Fix column names (dates)
-new_cols = list(df.columns[:2])
+    df.columns = new_cols
 
-for col in df.columns[2:]:
-    try:
-        new_col = pd.to_datetime(col).strftime("%d-%m-%Y")
-    except:
-        new_col = col
-    new_cols.append(new_col)
+    # CONVERT VALUES
+    for col in df.columns[2:]:
+        df[col] = pd.to_numeric(df[col], errors='coerce').astype("Int64")
 
-df.columns = new_cols
+    df = df.fillna("")
 
-# Convert values properly
-for col in df.columns[2:]:
-    df[col] = pd.to_numeric(df[col], errors='coerce').astype("Int64")
+    st.success("Data Saved Successfully ✅")
+    st.subheader("📊 Full Energy Data (Live)")
+    st.dataframe(df, use_container_width=True)
 
-# Only fill blanks (do NOT delete rows)
-df = df.fillna("")
-
-st.subheader("📊 Full Energy Data (Live)")
-st.dataframe(df, use_container_width=True)
-
-    # ==============================
-    # DOWNLOAD BUTTON
-    # ==============================
-
-# Always allow download
 if os.path.exists(FILE_NAME):
+
+    # Show existing data
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
+
     st.subheader("📊 Existing Data")
     st.dataframe(df, use_container_width=True)
+
+    # Download button
+    with open(FILE_NAME, "rb") as file:
+        st.download_button(
+            label="📥 Download Updated Excel",
+            data=file,
+            file_name="Energy Sheet.xlsx"
+        )
