@@ -184,11 +184,25 @@ if st.button("Submit"):
 # DISPLAY DATA (LIVE VIEW)
 # ==============================
 
+# ==============================
+# DISPLAY DATA (READ FORMULA VALUES)
+# ==============================
+
 if os.path.exists(FILE_NAME):
 
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
+    # ✅ Read calculated values (IMPORTANT)
+    wb_data = load_workbook(FILE_NAME, data_only=True)
+    ws_data = wb_data[current_month]
 
-    # Fix date column names
+    data = list(ws_data.values)
+
+    # Convert to DataFrame
+    df = pd.DataFrame(data[2:], columns=data[1])
+
+    # ==============================
+    # FIX COLUMN NAMES (DATES)
+    # ==============================
+
     new_cols = list(df.columns[:2])
 
     for col in df.columns[2:]:
@@ -200,11 +214,13 @@ if os.path.exists(FILE_NAME):
 
     df.columns = new_cols
 
-    # Convert numeric safely
+    # ==============================
+    # CLEAN DATA
+    # ==============================
+
     for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # Clean display (remove decimals + None)
     df_display = df.copy()
 
     for col in df_display.columns[2:]:
@@ -213,6 +229,10 @@ if os.path.exists(FILE_NAME):
         )
 
     df_display = df_display.fillna("")
+
+    # ==============================
+    # SHOW DATA
+    # ==============================
 
     st.subheader("📊 Energy Data (Live)")
     st.dataframe(df_display, use_container_width=True)
