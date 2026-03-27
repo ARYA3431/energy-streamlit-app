@@ -108,22 +108,20 @@ if st.button("Submit"):
         ws.cell(row=2, column=col_index).value = today_str
 
     # UPDATE FUNCTION
-    def update_excel(name, value):
+   def update_excel(name, value):
         for row in range(4, ws.max_row + 1):
 
-            col1 = str(ws.cell(row=row, column=1).value or "").strip()
-            col2 = str(ws.cell(row=row, column=2).value or "").strip()
+            col1 = str(ws.cell(row=row, column=1).value).strip()
+            col2 = str(ws.cell(row=row, column=2).value).strip()
 
-            combined = f"{col1} {col2}".upper()
+            combined = f"{col1} {col2}".strip()
 
             # Skip TOTAL rows
-            if "TOTAL" in combined:
+            if "TOTAL" in combined.upper():
                 continue
 
-            # Normalize name (VERY IMPORTANT)
-            clean_name = name.upper().replace("-", "#")
-
-            if clean_name in combined:
+            # Match using contains (flexible match)
+            if name.upper() in combined.upper():
                 ws.cell(row=row, column=col_index).value = int(value)
                 return
     # ==============================
