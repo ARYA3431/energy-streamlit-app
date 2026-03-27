@@ -158,15 +158,22 @@ if os.path.exists(FILE_NAME):
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
     # Convert numbers safely
+    # Convert values to numeric
     for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # ✅ CLEAN DISPLAY ONLY
+    # ✅ REMOVE DECIMALS (SAFE)
     df_display = df.copy()
-    df_display = df_display.fillna("")   # remove None / NaN
 
-    st.subheader("📊 Existing Data")
-    st.dataframe(df_display, use_container_width=True)
+    for col in df_display.columns[2:]:
+        df_display[col] = df_display[col].apply(
+            lambda x: int(x) if pd.notnull(x) else ""
+        )
+
+    # Remove None
+    df_display = df_display.fillna("")
+        st.subheader("📊 Existing Data")
+        st.dataframe(df_display, use_container_width=True)
     
     # Download button
     with open(FILE_NAME, "rb") as file:
