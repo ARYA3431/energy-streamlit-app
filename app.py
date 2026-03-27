@@ -158,10 +158,21 @@ if st.button("Submit"):
 
     # ✅ NOW read file (correct position)
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, dtype=object)
+    # Convert date columns to string format
+    new_cols = list(df.columns[:2])  # LOCATION, FDR/DATE
 
-    # Convert values to numeric
     for col in df.columns[2:]:
-        df[col] = pd.to_numeric(df[col], errors='coerce')
+        try:
+            # Convert datetime → string format
+            new_col = pd.to_datetime(col).strftime("%d-%m-%Y")
+        except:
+            new_col = col
+        new_cols.append(new_col)
+
+    df.columns = new_cols
+        # Convert values to numeric
+        for col in df.columns[2:]:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
 
     st.success("Data Saved Successfully ✅")
     st.subheader("📊 Full Energy Data (Live)")
