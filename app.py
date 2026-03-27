@@ -97,7 +97,7 @@ if st.button("Submit"):
         st.error("Excel file not found!")
         st.stop()
 
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1)
+    df = pd.read_excel(FILE_NAME, sheet_name=current_month)
 
     # Create today's column if missing
     if today_str not in df.columns:
