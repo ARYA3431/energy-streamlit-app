@@ -153,9 +153,17 @@ if os.path.exists(FILE_NAME):
     # Show existing data
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
-    st.subheader("📊 Existing Data")
-    st.dataframe(df, use_container_width=True)
+    # Convert numbers safely
+    for col in df.columns[2:]:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
+    # ✅ CLEAN DISPLAY ONLY
+    df_display = df.copy()
+    df_display = df_display.fillna("")   # remove None / NaN
+
+    st.subheader("📊 Existing Data")
+    st.dataframe(df_display, use_container_width=True)
+    
     # Download button
     with open(FILE_NAME, "rb") as file:
         st.download_button(
