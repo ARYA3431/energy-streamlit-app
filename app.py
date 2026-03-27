@@ -156,4 +156,6 @@ if st.button("Submit"):
 
     st.success("Data Saved Successfully ✅")
 
+    st.subheader("📊 Full Energy Data (Live)")
+    st.dataframe(df, use_container_width=True)
 
