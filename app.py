@@ -42,7 +42,7 @@ tr_labels = [
     "TR-4 (31.5 MVA)", "TR-5 (31.5 MVA)"
 ]
 
-lhf_labels = ["LHF-1 TR(44 MVA)", "LHF-2 TR(44 MVA)"]
+lhf_labels = ["LHF#1 TR(44 MVA)", "LHF#2 TR(44 MVA)"]
 
 lcss9_labels = [
     "LCSS-9 FDR-1", "LCSS-9 FDR-3", "LCSS-9 FDR-2"
