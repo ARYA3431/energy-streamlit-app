@@ -162,8 +162,8 @@ if st.button("Submit"):
     # SAVE TO EXCEL
     # ==============================
 
-    with pd.ExcelWriter(FILE_NAME, engine="openpyxl", mode="a", if_sheet_exists="overlay") as writer:
-     df.to_excel(writer, sheet_name=current_month, index=False, startrow=1)
+    with pd.ExcelWriter(FILE_NAME, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
+    df.to_excel(writer, sheet_name=current_month, index=False)
 
     st.success("Data Saved Successfully ✅")
 
