@@ -174,9 +174,11 @@ st.dataframe(df, use_container_width=True)
     # DOWNLOAD BUTTON
     # ==============================
 
+# Always allow download
+if os.path.exists(FILE_NAME):
     with open(FILE_NAME, "rb") as file:
         st.download_button(
-        label="📥 Download Updated Excel",
-        data=file,
-        file_name="Energy Sheet.xlsx"
+            label="📥 Download Updated Excel",
+            data=file,
+            file_name="Energy Sheet.xlsx"
         )
