@@ -124,8 +124,6 @@ if st.button("Submit"):
     update_excel("TR-4 (31.5 MVA)", tr_values["TR-4 (31.5 MVA)"])
     update_excel("TR-5 (31.5 MVA)", tr_values["TR-5 (31.5 MVA)"])
 
-    update_excel("TOTAL CONSUMPTION", total_consumption)
-
     # SAVE
     wb.save(FILE_NAME)
 
