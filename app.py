@@ -109,12 +109,6 @@ total_bof = total_tr - total_lcp - total_caster
 
 total_rcph = sum(rcph_values.values())
 
-update_excel("Total", total_tr)
-update_excel("TOTAL LF CONSUMPTION", total_lf)
-update_excel("TOTAL LCP CONSUMPTION", total_lcp)
-update_excel("TOTAL CASTER CONSUMPTION", total_caster)
-update_excel("TOTAL BOF CONSUMPTION", total_bof)
-update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
 
 # ==============================
 # SUBMIT BUTTON
@@ -125,36 +119,45 @@ if st.button("Submit"):
     wb = load_workbook(FILE_NAME, data_only=False)
     ws = wb[current_month]
 
+    # ==============================
     # FIND TODAY COLUMN
+    # ==============================
+
     col_index = None
+
     for col in range(3, ws.max_column + 1):
         if str(ws.cell(row=2, column=col).value) == today_str:
             col_index = col
             break
 
+    # Create new column if not found
     if col_index is None:
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
 
-# UPDATE FUNCTION
-        def update_excel(name, value):
-            for row in range(4, ws.max_row + 1):
-
-                col1 = str(ws.cell(row=row, column=1).value).strip()
-                col2 = str(ws.cell(row=row, column=2).value).strip()
-
-                combined = f"{col1} {col2}".strip()
-
-                # Skip TOTAL rows
-                if "TOTAL" in combined.upper():
-                    continue
-
-                # Match using contains (flexible match)
-                if name.upper() in combined.upper():
-                    ws.cell(row=row, column=col_index).value = int(value)
-                    return
     # ==============================
-    # UPDATE ALL VALUES
+    # UPDATE FUNCTION (FIXED)
+    # ==============================
+
+    def update_excel(name, value):
+        for row in range(4, ws.max_row + 1):
+
+            col1 = str(ws.cell(row=row, column=1).value).strip()
+            col2 = str(ws.cell(row=row, column=2).value).strip()
+
+            combined = f"{col1} {col2}".strip()
+
+            # 🚫 Skip TOTAL rows (IMPORTANT)
+            if "TOTAL" in combined.upper():
+                continue
+
+            # Flexible matching
+            if name.upper() in combined.upper():
+                ws.cell(row=row, column=col_index).value = int(value)
+                return
+
+    # ==============================
+    # UPDATE ALL INPUT VALUES
     # ==============================
 
     for group in [
@@ -164,26 +167,30 @@ if st.button("Submit"):
         for key, val in group.items():
             update_excel(key, val)
 
-    # HEAT VALUES
+    # Heat values
     update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
     update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
 
-    # SAVE FILE (KEEP FORMULAS SAFE)
+    # ==============================
+    # SAVE (KEEP FORMULAS SAFE)
+    # ==============================
+
     wb.calculation.fullCalcOnLoad = True
     wb.save(FILE_NAME)
 
     st.success("✅ Data Saved Successfully")
 
 # ==============================
-# DISPLAY DATA
+# DISPLAY DATA (LIVE VIEW)
 # ==============================
 
 if os.path.exists(FILE_NAME):
 
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
-    # Fix date columns
+    # Fix date column names
     new_cols = list(df.columns[:2])
+
     for col in df.columns[2:]:
         try:
             new_col = pd.to_datetime(col).strftime("%d-%m-%Y")
@@ -197,7 +204,7 @@ if os.path.exists(FILE_NAME):
     for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # Clean display
+    # Clean display (remove decimals + None)
     df_display = df.copy()
 
     for col in df_display.columns[2:]:
@@ -210,7 +217,10 @@ if os.path.exists(FILE_NAME):
     st.subheader("📊 Energy Data (Live)")
     st.dataframe(df_display, use_container_width=True)
 
+    # ==============================
     # DOWNLOAD BUTTON
+    # ==============================
+
     with open(FILE_NAME, "rb") as file:
         st.download_button(
             label="📥 Download Updated Excel",
