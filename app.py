@@ -3,7 +3,6 @@ import pandas as pd
 import datetime
 import os
 from openpyxl import load_workbook
-import shutil
 
 # ==============================
 # BASIC SETTINGS
@@ -19,13 +18,11 @@ current_month = datetime.datetime.now().strftime("%B")
 today = datetime.datetime.now()
 today_str = today.strftime("%d-%m-%Y")
 
-st.title("Energy Monitoring System")
+st.title("⚡ Energy Monitoring System")
 
 # ==============================
-# USER INPUTS
+# INPUT GRID FUNCTION
 # ==============================
-
-st.header("Enter Meter Readings")
 
 def input_grid(labels):
     values = {}
@@ -36,6 +33,9 @@ def input_grid(labels):
                 values[label] = st.number_input(label, step=1.0, key=label)
     return values
 
+# ==============================
+# LABELS
+# ==============================
 
 tr_labels = [
     "TR-1 (31.5 MVA)", "TR-2 (31.5 MVA)", "TR-3 (31.5 MVA)",
@@ -48,27 +48,17 @@ lcp_labels = ["LCP FDR-1", "LCP FDR-3"]
 lcss9_labels = ["LCSS-9 FDR-1", "LCSS-9 FDR-2", "LCSS-9 FDR-3"]
 lcss8_labels = ["LCSS-8 FDR-1", "LCSS-8 FDR-2", "LCSS-8 FDR-3"]
 
-ccm_labels = ["CCM-1 EMS-1", "CCM-1 EMS-2"]
+# ==============================
+# INPUTS
+# ==============================
 
-fan_labels = [
-    "Primary ID Fan #1", "Primary ID Fan #2",
-    "Secondary ID Fan #1", "Secondary ID Fan #2", "Secondary ID Fan #3"
-]
-
-rcph_labels = ["RCPH I/C-1", "RCPH I/C-2"]
-
-other_labels = ["Grinder I/C Caster"]
-
+st.header("Enter Meter Readings")
 
 tr_values = input_grid(tr_labels)
 lhf_values = input_grid(lhf_labels)
 lcp_values = input_grid(lcp_labels)
 lcss9_values = input_grid(lcss9_labels)
 lcss8_values = input_grid(lcss8_labels)
-ccm_values = input_grid(ccm_labels)
-fan_values = input_grid(fan_labels)
-rcph_values = input_grid(rcph_labels)
-other_values = input_grid(other_labels)
 
 # ==============================
 # SUBMIT BUTTON
@@ -76,16 +66,16 @@ other_values = input_grid(other_labels)
 
 if st.button("Submit"):
 
-    wb = load_workbook(FILE_NAME, data_only=False)
+    wb = load_workbook(FILE_NAME)
     ws = wb[current_month]
 
+    # ------------------------------
     # FIND TODAY COLUMN
+    # ------------------------------
     col_index = None
 
     for col in range(3, ws.max_column + 1):
-        cell_value = ws.cell(row=2, column=col).value
-
-        if str(cell_value) == today_str:
+        if str(ws.cell(row=2, column=col).value) == today_str:
             col_index = col
             break
 
@@ -93,52 +83,62 @@ if st.button("Submit"):
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
 
+    # ------------------------------
     # UPDATE FUNCTION
+    # ------------------------------
     def update_excel(name, value):
         for row in range(4, ws.max_row + 1):
-            cell_name = ws.cell(row=row, column=2).value
-
-        # 🚫 Skip formula rows
-            if "TOTAL" in str(cell_name).upper():
-                continue
-
-            if cell_name == name:
+            if ws.cell(row=row, column=2).value == name:
                 ws.cell(row=row, column=col_index).value = int(value)
                 return
-            
-    # CALCULATIONS
-    total_consumption = sum(tr_values.values())
-    total_lf = sum(lhf_values.values())
+
+    # ------------------------------
+    # CALCULATIONS (PYTHON BASED)
+    # ------------------------------
+    total_tr = sum(tr_values.values())
+    total_lhf = sum(lhf_values.values())
     total_lcp = sum(lcp_values.values())
     total_lcss9 = sum(lcss9_values.values())
     total_lcss8 = sum(lcss8_values.values())
+
     total_caster = total_lcss8 + total_lcss9
-    total_rcph = sum(rcph_values.values())
-    total_id_fan = sum(fan_values.values())
-    total_bof = total_consumption - total_caster
+    total_bof = total_tr - total_caster
 
-    # UPDATE VALUES
-    update_excel("TR-1 (31.5 MVA)", tr_values["TR-1 (31.5 MVA)"])
-    update_excel("TR-2 (31.5 MVA)", tr_values["TR-2 (31.5 MVA)"])
-    update_excel("TR-3 (31.5 MVA)", tr_values["TR-3 (31.5 MVA)"])
-    update_excel("TR-4 (31.5 MVA)", tr_values["TR-4 (31.5 MVA)"])
-    update_excel("TR-5 (31.5 MVA)", tr_values["TR-5 (31.5 MVA)"])
+    # ------------------------------
+    # UPDATE RAW VALUES
+    # ------------------------------
+    for key, val in tr_values.items():
+        update_excel(key, val)
 
-    # SAVE
-    # Force Excel to recalculate formulas when opened
-    wb.calculation.fullCalcOnLoad = True
+    for key, val in lhf_values.items():
+        update_excel(key, val)
 
+    for key, val in lcp_values.items():
+        update_excel(key, val)
+
+    # ------------------------------
+    # UPDATE TOTALS (NOW SAFE)
+    # ------------------------------
+    update_excel("TOTAL", total_tr)
+    update_excel("TOTAL CASTER", total_caster)
+    update_excel("TOTAL BOF", total_bof)
+
+    # ------------------------------
+    # SAVE FILE
+    # ------------------------------
     wb.save(FILE_NAME)
 
-    # READ DATA
+    st.success("✅ Data Saved Successfully")
+
+# ==============================
+# DISPLAY DATA
+# ==============================
+
+if os.path.exists(FILE_NAME):
+
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
-    wb_data = load_workbook(FILE_NAME, data_only=True)
-    ws_data = wb_data[current_month]
 
-    data = list(ws_data.values)
-    df = pd.DataFrame(data[1:], columns=data[1])
-
-    # FIX COLUMN NAMES
+    # Fix date columns
     new_cols = list(df.columns[:2])
     for col in df.columns[2:]:
         try:
@@ -149,28 +149,11 @@ if st.button("Submit"):
 
     df.columns = new_cols
 
-    # CONVERT VALUES
-   # Convert values safely
-    for col in df.columns[2:]:
-        df[col] = pd.to_numeric(df[col], errors='coerce').round(0)
-
-    # Replace NaN with blank ONLY FOR DISPLAY
-    df_display = df.fillna("")
-
-    st.subheader("📊 Full Energy Data (Live)")
-    st.dataframe(df_display, use_container_width=True)
-
-if os.path.exists(FILE_NAME):
-
-    # Show existing data
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
-
-    # Convert numbers safely
-    # Convert values to numeric
+    # Convert numbers
     for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # ✅ REMOVE DECIMALS (SAFE)
+    # Clean display
     df_display = df.copy()
 
     for col in df_display.columns[2:]:
@@ -178,15 +161,18 @@ if os.path.exists(FILE_NAME):
             lambda x: int(x) if pd.notnull(x) else ""
         )
 
-    # Remove None
     df_display = df_display.fillna("")
-    st.subheader("📊 Existing Data")
+
+    st.subheader("📊 Energy Data (Live)")
     st.dataframe(df_display, use_container_width=True)
-    
-    # Download button
+
+    # ==============================
+    # DOWNLOAD BUTTON
+    # ==============================
+
     with open(FILE_NAME, "rb") as file:
         st.download_button(
-            label="📥 Download Updated Excel",
+            label="📥 Download Excel",
             data=file,
             file_name="Energy Sheet.xlsx"
         )
