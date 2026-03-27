@@ -138,13 +138,15 @@ if st.button("Submit"):
     df.columns = new_cols
 
     # CONVERT VALUES
-    for col in df.columns[2:]:
-        df[col] = pd.to_numeric(df[col], errors='coerce').round(0)
-    df = df.fillna(pd.NA)
+   # Convert values safely
+for col in df.columns[2:]:
+    df[col] = pd.to_numeric(df[col], errors='coerce').round(0)
 
-    st.success("Data Saved Successfully ✅")
-    st.subheader("📊 Full Energy Data (Live)")
-    st.dataframe(df, use_container_width=True)
+# Replace NaN with blank ONLY FOR DISPLAY
+df_display = df.fillna("")
+
+st.subheader("📊 Full Energy Data (Live)")
+st.dataframe(df_display, use_container_width=True)
 
 if os.path.exists(FILE_NAME):
 
