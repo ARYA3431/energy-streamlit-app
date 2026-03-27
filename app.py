@@ -171,8 +171,8 @@ if st.button("Submit"):
 
     df.columns = new_cols
         # Convert values to numeric
-        for col in df.columns[2:]:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
+    for col in df.columns[2:]:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
     st.success("Data Saved Successfully ✅")
     st.subheader("📊 Full Energy Data (Live)")
