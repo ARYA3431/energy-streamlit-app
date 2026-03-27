@@ -99,12 +99,12 @@ if st.button("Submit"):
             cell_name = ws.cell(row=row, column=2).value
 
         # 🚫 Skip formula rows
-        if "TOTAL" in str(cell_name).upper():
-            continue
+            if "TOTAL" in str(cell_name).upper():
+                continue
 
-        if cell_name == name:
-            ws.cell(row=row, column=col_index).value = int(value)
-            return
+            if cell_name == name:
+                ws.cell(row=row, column=col_index).value = int(value)
+                return
             
     # CALCULATIONS
     total_consumption = sum(tr_values.values())
