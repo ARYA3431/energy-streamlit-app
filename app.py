@@ -176,9 +176,6 @@ st.dataframe(df, use_container_width=True)
 
 # Always allow download
 if os.path.exists(FILE_NAME):
-    with open(FILE_NAME, "rb") as file:
-        st.download_button(
-            label="📥 Download Updated Excel",
-            data=file,
-            file_name="Energy Sheet.xlsx"
-        )
+    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
+    st.subheader("📊 Existing Data")
+    st.dataframe(df, use_container_width=True)
