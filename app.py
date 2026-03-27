@@ -91,17 +91,39 @@ other_values = input_grid(other_labels)
 # SUBMIT BUTTON
 # ==============================
 
+from openpyxl import load_workbook
+
 if st.button("Submit"):
 
     if not os.path.exists(FILE_NAME):
         st.error("Excel file not found!")
         st.stop()
 
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month)
+    wb = load_workbook(FILE_NAME)
+    ws = wb[current_month]
 
-    # Create today's column if missing
-    if today_str not in df.columns:
-        df[today_str] = 0
+    # Find today's column
+    today_date = today.date()
+
+    col_index = None
+    for col in range(3, ws.max_column + 1):
+        cell_value = ws.cell(row=2, column=col).value
+        if isinstance(cell_value, datetime.datetime):
+            if cell_value.date() == today_date:
+                col_index = col
+                break
+
+    # If today's column not found → create new column
+    if col_index is None:
+        col_index = ws.max_column + 1
+        ws.cell(row=2, column=col_index).value = today
+
+    # Function to update row value
+    def update_excel(name, value):
+        for row in range(4, ws.max_row + 1):
+            if ws.cell(row=row, column=2).value == name:
+                ws.cell(row=row, column=col_index).value = int(value)
+                return
 
     # ==============================
     # CALCULATIONS
@@ -115,56 +137,23 @@ if st.button("Submit"):
     total_caster = total_lcss8 + total_lcss9
     total_rcph = sum(rcph_values.values())
     total_id_fan = sum(fan_values.values())
-    grinder = other_values["Grinder I/C Caster"]
-    ccm1 = ccm_values["CCM-1 EMS-1"]
-    ccm2 = ccm_values["CCM-1 EMS-2"]
     total_bof = total_consumption - total_caster
 
     # ==============================
-    # FUNCTION TO UPDATE VALUE
+    # UPDATE VALUES
     # ==============================
 
-    def update_value(name, value):
+    update_excel("TR-1 (31.5 MVA)", tr_values["TR-1 (31.5 MVA)"])
+    update_excel("TR-2 (31.5 MVA)", tr_values["TR-2 (31.5 MVA)"])
+    update_excel("TR-3 (31.5 MVA)", tr_values["TR-3 (31.5 MVA)"])
+    update_excel("TR-4 (31.5 MVA)", tr_values["TR-4 (31.5 MVA)"])
+    update_excel("TR-5 (31.5 MVA)", tr_values["TR-5 (31.5 MVA)"])
 
-        mask = df.iloc[:, 1] == name
+    update_excel("TOTAL CONSUMPTION", total_consumption)
 
-        if mask.any():
-            df.loc[mask, today_str] = int(value)
+    # Save workbook (VERY IMPORTANT)
+    wb.save(FILE_NAME)
 
-        else:
-            new_row = {col: 0 for col in df.columns}
-            new_row[df.columns[1]] = name
-            new_row[today_str] = int(value)
-
-            df.loc[len(df)] = new_row
-
-    # ==============================
-    # UPDATE EQUIPMENT VALUES
-    # ==============================
-
-   
-
-    # ==============================
-    # UPDATE TOTALS
-    # ==============================
-
-    update_value("TOTAL CONSUMPTION", total_consumption)
-    update_value("TOTAL LF CONSUMPTION", total_lf)
-    update_value("TOTAL LCP CONSUMPTION", total_lcp)
-    update_value("TOTAL LCSS9 CONSUMPTION", total_lcss9)
-    update_value("TOTAL LCSS8 CONSUMPTION", total_lcss8)
-    update_value("TOTAL CASTER CONSUMPTION", total_caster)
-    update_value("TOTAL BOF CONSUMPTION", total_bof)
-    update_value("TOTAL RCPH CONSUMPTION", total_rcph)
-    update_value("TOTAL ID FAN CONSUMPTION", total_id_fan)
-
-    # ==============================
-    # SAVE TO EXCEL
-    # ==============================
-
-    with pd.ExcelWriter(FILE_NAME, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
-        df.to_excel(writer, sheet_name=current_month, index=False)
-    st.write("Columns:", df.columns)
     st.success("Data Saved Successfully ✅")
 
     st.subheader("Updated Data Preview")
