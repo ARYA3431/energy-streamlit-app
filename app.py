@@ -34,7 +34,7 @@ def input_grid(labels):
     return values
 
 # ==============================
-# LABELS
+# ALL LABELS (MATCHING YOUR SHEET)
 # ==============================
 
 tr_labels = [
@@ -43,42 +43,48 @@ tr_labels = [
 ]
 
 lhf_labels = ["LHF-1 (44 MVA)", "LHF-2 (44 MVA)"]
-lcp_labels = ["LCP FDR-1", "LCP FDR-3"]
 
-lcss9_labels = ["LCSS-9 FDR-1", "LCSS-9 FDR-2", "LCSS-9 FDR-3"]
-lcss8_labels = ["LCSS-8 FDR-1", "LCSS-8 FDR-2", "LCSS-8 FDR-3"]
+lcss9_labels = [
+    "LCSS-9 FDR-1", "LCSS-9 FDR-3", "LCSS-9 FDR-2"
+]
+
+lcss8_labels = [
+    "LCSS-8 FDR-1", "LCSS-8 FDR-3", "LCSS-8 FDR-2"
+]
 
 ccm_labels = ["CCM-1 EMS-1", "CCM-1 EMS-2"]
 
 fan_labels = [
-    "Primary ID Fan #1", "Primary ID Fan #2",
-    "Secondary ID Fan #1", "Secondary ID Fan #2", "Secondary ID Fan #3"
+    "PRIMARY ID FAN #1", "PRIMARY ID FAN #2",
+    "SECONDARY ID FAN#1", "SECONDARY ID FAN#2", "SECONDARY ID FAN#3"
 ]
 
 rcph_labels = ["RCPH I/C-1", "RCPH I/C-2"]
 
+lcp_labels = ["LCP FDR-1", "LCP FDR-3"]
+
 other_labels = ["Grinder I/C Caster"]
 
 # ✅ NEW
-heat_labels = ["Heat Tap", "Heat Cast"]
+heat_labels = ["No. of Heat Tap", "No. of Heat Cast"]
 
 # ==============================
-# INPUTS
+# INPUT SECTION
 # ==============================
 
 st.header("Enter Meter Readings")
 
 tr_values = input_grid(tr_labels)
 lhf_values = input_grid(lhf_labels)
-lcp_values = input_grid(lcp_labels)
 lcss9_values = input_grid(lcss9_labels)
 lcss8_values = input_grid(lcss8_labels)
 ccm_values = input_grid(ccm_labels)
 fan_values = input_grid(fan_labels)
 rcph_values = input_grid(rcph_labels)
+lcp_values = input_grid(lcp_labels)
 other_values = input_grid(other_labels)
 
-# ✅ NEW INPUT
+# ✅ HEAT INPUT
 heat_values = input_grid(heat_labels)
 
 # ==============================
@@ -106,7 +112,7 @@ if st.button("Submit"):
         for row in range(4, ws.max_row + 1):
             cell_name = ws.cell(row=row, column=2).value
 
-            # 🚫 DO NOT TOUCH TOTAL ROWS
+            # DO NOT TOUCH TOTAL ROWS
             if "TOTAL" in str(cell_name).upper():
                 continue
 
@@ -115,48 +121,21 @@ if st.button("Submit"):
                 return
 
     # ==============================
-    # CALCULATIONS
+    # UPDATE ALL VALUES
     # ==============================
 
-    total_consumption = sum(tr_values.values())
-    total_lf = sum(lhf_values.values())
-    total_lcp = sum(lcp_values.values())
-    total_lcss9 = sum(lcss9_values.values())
-    total_lcss8 = sum(lcss8_values.values())
-    total_caster = total_lcss8 + total_lcss9
-    total_rcph = sum(rcph_values.values())
-    total_id_fan = sum(fan_values.values())
-    total_bof = total_consumption - total_caster
+    for group in [
+        tr_values, lhf_values, lcss9_values, lcss8_values,
+        ccm_values, fan_values, rcph_values, lcp_values, other_values
+    ]:
+        for key, val in group.items():
+            update_excel(key, val)
 
-    # NEW HEAT VALUES
-    heat_tap = heat_values["Heat Tap"]
-    heat_cast = heat_values["Heat Cast"]
+    # HEAT VALUES
+    update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
+    update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
 
-    # ==============================
-    # UPDATE VALUES
-    # ==============================
-
-    # TR
-    for key, val in tr_values.items():
-        update_excel(key, val)
-
-    # LHF
-    for key, val in lhf_values.items():
-        update_excel(key, val)
-
-    # LCP
-    for key, val in lcp_values.items():
-        update_excel(key, val)
-
-    # OTHER
-    for key, val in other_values.items():
-        update_excel(key, val)
-
-    # HEAT (NEW)
-    update_excel("Heat Tap", heat_tap)
-    update_excel("Heat Cast", heat_cast)
-
-    # SAVE (KEEP FORMULAS SAFE)
+    # SAVE FILE (KEEP FORMULAS SAFE)
     wb.calculation.fullCalcOnLoad = True
     wb.save(FILE_NAME)
 
@@ -170,7 +149,7 @@ if os.path.exists(FILE_NAME):
 
     df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
-    # Convert columns (dates)
+    # Fix date columns
     new_cols = list(df.columns[:2])
     for col in df.columns[2:]:
         try:
@@ -181,12 +160,13 @@ if os.path.exists(FILE_NAME):
 
     df.columns = new_cols
 
-    # Convert numeric
+    # Convert numeric safely
     for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # REMOVE DECIMALS + NONE
+    # Clean display
     df_display = df.copy()
+
     for col in df_display.columns[2:]:
         df_display[col] = df_display[col].apply(
             lambda x: int(x) if pd.notnull(x) else ""
