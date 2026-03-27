@@ -139,9 +139,8 @@ if st.button("Submit"):
 
     # CONVERT VALUES
     for col in df.columns[2:]:
-        df[col] = pd.to_numeric(df[col], errors='coerce').astype("Int64")
-
-    df = df.fillna("")
+        df[col] = pd.to_numeric(df[col], errors='coerce').round(0)
+    df = df.fillna(pd.NA)
 
     st.success("Data Saved Successfully ✅")
     st.subheader("📊 Full Energy Data (Live)")
