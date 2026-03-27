@@ -159,7 +159,7 @@ df.columns = new_cols
 
     # Convert values to numeric (fix 1970 issue)
     # Convert values to numeric
-    for col in df.columns[2:]:
+        for col in df.columns[2:]:
         df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype("Int64")
         # ✅ CLEAN DATA
         df = df.fillna("")                      # remove None
