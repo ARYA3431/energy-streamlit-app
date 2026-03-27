@@ -156,6 +156,4 @@ if st.button("Submit"):
 
     st.success("Data Saved Successfully ✅")
 
-    st.subheader("Updated Data Preview")
-    st.dataframe(df)
 
