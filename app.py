@@ -143,24 +143,28 @@ if st.button("Submit"):
     # READ + CLEAN DATA FOR DISPLAY
     # ==============================
 
-    df = pd.read_excel(FILE_NAME, sheet_name=current_month, dtype=object)
+    df = pd.read_excel(FILE_NAME, sheet_name=current_month, header=1, dtype=object)
 
     # Fix column names (dates)
     new_cols = list(df.columns[:2])
 
-    for col in df.columns[2:]:
-        try:
-            new_col = pd.to_datetime(col).strftime("%d-%m-%Y")
-        except:
-            new_col = col
-        new_cols.append(new_col)
+for col in df.columns[2:]:
+    try:
+        new_col = pd.to_datetime(col).strftime("%d-%m-%Y")
+    except:
+        new_col = col
+    new_cols.append(new_col)
 
-    df.columns = new_cols
+df.columns = new_cols
 
     # Convert values to numeric (fix 1970 issue)
     # Convert values to numeric
     for col in df.columns[2:]:
-        df[col] = pd.to_numeric(df[col], errors='coerce')
+        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype("Int64")
+        # ✅ CLEAN DATA
+        df = df.fillna("")                      # remove None
+        df = df.dropna(how="all")               # remove empty rows
+
 
     st.success("Data Saved Successfully ✅")
 
