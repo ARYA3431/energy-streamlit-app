@@ -42,7 +42,7 @@ tr_labels = [
     "TR-4 (31.5 MVA)", "TR-5 (31.5 MVA)"
 ]
 
-lhf_labels = ["LHF#1 TR(44 MVA)", "LHF#2 TR(44 MVA)"]
+lhf_labels = ["LHF#1", "LHF#2"]
 
 lcss9_labels = [
     "LCSS-9 FDR-1", "LCSS-9 FDR-3", "LCSS-9 FDR-2"
@@ -108,20 +108,22 @@ if st.button("Submit"):
         ws.cell(row=2, column=col_index).value = today_str
 
     # UPDATE FUNCTION
-    def update_excel(name, value):
+   def update_excel(name, value):
         for row in range(4, ws.max_row + 1):
 
-            col1 = str(ws.cell(row=row, column=1).value).strip()
-            col2 = str(ws.cell(row=row, column=2).value).strip()
+            col1 = str(ws.cell(row=row, column=1).value or "").strip()
+            col2 = str(ws.cell(row=row, column=2).value or "").strip()
 
-            combined = f"{col1} {col2}".strip()
+            combined = f"{col1} {col2}".upper()
 
             # Skip TOTAL rows
-            if "TOTAL" in combined.upper():
+            if "TOTAL" in combined:
                 continue
 
-            # Match using contains (flexible match)
-            if name.upper() in combined.upper():
+            # Normalize name (VERY IMPORTANT)
+            clean_name = name.upper().replace("-", "#")
+
+            if clean_name in combined:
                 ws.cell(row=row, column=col_index).value = int(value)
                 return
     # ==============================
