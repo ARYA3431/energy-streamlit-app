@@ -172,8 +172,8 @@ if os.path.exists(FILE_NAME):
 
     # Remove None
     df_display = df_display.fillna("")
-        st.subheader("📊 Existing Data")
-        st.dataframe(df_display, use_container_width=True)
+    st.subheader("📊 Existing Data")
+    st.dataframe(df_display, use_container_width=True)
     
     # Download button
     with open(FILE_NAME, "rb") as file:
