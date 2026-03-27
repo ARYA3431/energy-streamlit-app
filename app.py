@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 # BASIC SETTINGS
 # ==============================
 
-FILE_NAME = "/tmp/Energy Sheet.xlsx"
+FILE_NAME = "Energy Sheet.xlsx"
 SOURCE_FILE = "Energy Sheet.xlsx"
 
 import shutil
