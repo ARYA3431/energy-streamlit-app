@@ -186,7 +186,7 @@ if st.button("Submit"):
 
                 combined = f"{col1} {col2}".upper()
 
-                    if name.upper() in combined:
+                if name.upper() in combined:
 
                     # Previous column
                     prev_col = col_index - 1
