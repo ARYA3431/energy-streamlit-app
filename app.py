@@ -191,30 +191,33 @@ if st.button("Submit"):
     # ==============================
     # UPDATE FUNCTION (FIXED)
     # ==============================
+    def clean_text(text):
+    return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
+
     def update_excel(name, value):
-         for row in range(4, ws.max_row + 1):
 
-            col1 = str(ws.cell(row=row, column=1).value).strip()
-            col2 = str(ws.cell(row=row, column=2).value).strip()
+        clean_name = clean_text(name)
 
-            combined = f"{col1} {col2}".strip()
+        for row in range(4, ws.max_row + 1):
 
-            if "TOTAL" in combined.upper():
+            col1 = ws.cell(row=row, column=1).value
+            col2 = ws.cell(row=row, column=2).value
+
+            combined = f"{col1} {col2}"
+
+            clean_combined = clean_text(combined)
+
+            # Skip TOTAL rows
+            if "TOTAL" in clean_combined:
                 continue
 
-            clean_name = name.upper().replace("-", "").replace("#", "").replace(" ", "")
-            clean_combined = combined.upper().replace("-", "").replace("#", "").replace(" ", "")
-
+            # ✅ FLEXIBLE MATCH
             if clean_name in clean_combined:
                 ws.cell(row=row, column=col_index).value = int(value)
-
-                # ✅ DEBUG PRINT
-                st.write(f"Updated: {name} → Row {row}")
-    
+                st.write(f"✅ Updated: {name} → Row {row}")
                 return
 
-    # ❌ IF NOT FOUND
-    st.write(f"❌ NOT FOUND: {name}")
+        st.write(f"❌ NOT FOUND: {name}")
 
     # ==============================
     # UPDATE ALL INPUT VALUES
