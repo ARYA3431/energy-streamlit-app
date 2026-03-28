@@ -186,14 +186,14 @@ if st.button("Submit"):
 
                 combined = f"{col1} {col2}".upper()
 
-                if name.upper() in combined:
+                    if name.upper() in combined:
 
-                # Previous column
-                prev_col = col_index - 1
+                    # Previous column
+                    prev_col = col_index - 1
 
-                if prev_col >= 3:
-                    prev_value = ws.cell(row=row, column=prev_col).value
-                    return prev_value if prev_value else 0
+                    if prev_col >= 3:
+                        prev_value = ws.cell(row=row, column=prev_col).value
+                        return prev_value if prev_value else 0
 
         return 0
 
