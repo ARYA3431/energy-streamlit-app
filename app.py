@@ -111,14 +111,6 @@ total_bof = total_tr - total_lcp - total_caster
 
 # TOTAL RCPH
 total_rcph = sum(rcph_values.values())
-# ==============================
-# LCP PER DAY CALCULATION
-# ==============================
-
-lcp_today = total_lcp
-lcp_yesterday = get_previous_value("LCP FDR-1") + get_previous_value("LCP FDR-3")
-
-lcp_per_day = lcp_today - lcp_yesterday
 
 # HEAT BASED CALCULATION
 heat_tap = heat_values["No. of Heat Tap"]
