@@ -194,7 +194,6 @@ if st.button("Submit"):
 
                 if clean_name in clean_combined:
                     ws.cell(row=row, column=col_index).value = int(value)
-                    st.write(f"✅ Updated: {name} → Row {row}")
                     return
 
             st.write(f"❌ NOT FOUND: {name}")
