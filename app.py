@@ -111,6 +111,14 @@ total_bof = total_tr - total_lcp - total_caster
 
 # TOTAL RCPH
 total_rcph = sum(rcph_values.values())
+# ==============================
+# LCP PER DAY CALCULATION
+# ==============================
+
+lcp_today = total_lcp
+lcp_yesterday = get_previous_value("LCP FDR-1") + get_previous_value("LCP FDR-3")
+
+lcp_per_day = lcp_today - lcp_yesterday
 
 # HEAT BASED CALCULATION
 heat_tap = heat_values["No. of Heat Tap"]
@@ -244,6 +252,7 @@ if st.button("Submit"):
         update_excel("TOTAL CASTER CONSUMPTION", total_caster)
         update_excel("TOTAL BOF CONSUMPTION", total_bof)
         update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
+        update_excel("LCP PER DAY CONSUMPTION", lcp_per_day)
 
     # SAVE
         wb.calculation.fullCalcOnLoad = True
