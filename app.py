@@ -280,10 +280,10 @@ rcph_per_day = calculate_per_day(ws, col_index, "TOTAL RCPH CONSUMPTION", total_
     # UPDATE INPUT VALUES
     # ==============================
 
-    for group in [
-            tr_values, lhf_values, lcss9_values, lcss8_values,
-            ccm_values, fan_values, rcph_values, lcp_values, other_values
-        ]:
+for group in [
+    tr_values, lhf_values, lcss9_values, lcss8_values,
+        ccm_values, fan_values, rcph_values, lcp_values, other_values
+    ]:
             for key, val in group.items():
                 update_excel(key, val)
 
