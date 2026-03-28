@@ -202,8 +202,8 @@ if st.button("Submit"):
             if "TOTAL" in combined.upper():
                 continue
 
-           clean_name = name.upper().replace("-", "").replace("#", "").replace(" ", "")
-           clean_combined = combined.upper().replace("-", "").replace("#", "").replace(" ", "")
+            clean_name = name.upper().replace("-", "").replace("#", "").replace(" ", "")
+            clean_combined = combined.upper().replace("-", "").replace("#", "").replace(" ", "")
 
             if clean_name in clean_combined:
                 ws.cell(row=row, column=col_index).value = int(value)
