@@ -192,7 +192,7 @@ if st.button("Submit"):
     # UPDATE FUNCTION (FIXED)
     # ==============================
     def clean_text(text):
-    return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
+        return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
 
     def update_excel(name, value):
 
