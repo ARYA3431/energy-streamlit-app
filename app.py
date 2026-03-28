@@ -277,7 +277,7 @@ for group in [
         ccm_values, fan_values, rcph_values, lcp_values, other_values
     ]:
         for key, val in group.items():
-            update_excel(key, val)
+        update_excel(key, val)
 
         # HEAT
         update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
