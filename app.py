@@ -253,20 +253,20 @@ if st.button("Submit"):
 
             st.write(f"❌ NOT FOUND: {name}")
             # ==============================
-# PER DAY CALCULATIONS (AUTO)
-# ==============================
+            # PER DAY CALCULATIONS (AUTO)
+            # ==============================
 
-tr_per_day = calculate_per_day(ws, col_index, "Total", total_tr)
+            tr_per_day = calculate_per_day(ws, col_index, "Total", total_tr)
 
-lcp_per_day = calculate_per_day(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
+            lcp_per_day = calculate_per_day(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
 
-lf_per_day = calculate_per_day(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
+            lf_per_day = calculate_per_day(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
 
-caster_per_day = calculate_per_day(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
+            caster_per_day = calculate_per_day(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
 
-bof_per_day = calculate_per_day(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
+            bof_per_day = calculate_per_day(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
 
-rcph_per_day = calculate_per_day(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
+            rcph_per_day = calculate_per_day(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
 
     # ==============================
     # UPDATE INPUT VALUES
