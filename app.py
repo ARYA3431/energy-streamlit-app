@@ -277,30 +277,30 @@ for group in [
         ccm_values, fan_values, rcph_values, lcp_values, other_values
     ]:
         for key, val in group.items():
-        update_excel(key, val)
+            update_excel(key, val)
 
         # HEAT
-        update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
-        update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
+            update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
+            update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
     
 
     # ==============================
         # ✅ TOTALS (INSIDE SUBMIT ONLY)
     # ==============================
 
-        update_excel("Total", total_tr)
-        update_excel("TOTAL LF CONSUMPTION", total_lf)
-        update_excel("TOTAL LCP CONSUMPTION", total_lcp)
-        update_excel("TOTAL CASTER CONSUMPTION", total_caster)
-        update_excel("TOTAL BOF CONSUMPTION", total_bof)
-        update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
-        update_excel("LCP PER DAY CONSUMPTION", lcp_per_day)
+            update_excel("Total", total_tr)
+            update_excel("TOTAL LF CONSUMPTION", total_lf)
+            update_excel("TOTAL LCP CONSUMPTION", total_lcp)
+            update_excel("TOTAL CASTER CONSUMPTION", total_caster)
+            update_excel("TOTAL BOF CONSUMPTION", total_bof)
+            update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
+            update_excel("LCP PER DAY CONSUMPTION", lcp_per_day)
 
     # SAVE
-        wb.calculation.fullCalcOnLoad = True
-        wb.save(FILE_NAME)
+            wb.calculation.fullCalcOnLoad = True
+            wb.save(FILE_NAME)
 
-        st.success("✅ Data Saved Successfully")
+            st.success("✅ Data Saved Successfully")
 
 # ==============================
 # DISPLAY DATA (LIVE VIEW)
