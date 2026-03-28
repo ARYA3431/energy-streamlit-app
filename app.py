@@ -160,85 +160,76 @@ st.metric("📊 PER TON CONSUMPTION", round(per_ton, 2))
 # SUBMIT BUTTON
 # ==============================
 
-if st.button("Submit"):
+    if st.button("Submit"):
+    
+        wb = load_workbook(FILE_NAME, data_only=False)
+        ws = wb[current_month]
 
-    wb = load_workbook(FILE_NAME, data_only=False)
-    ws = wb[current_month]
+        # FIND TODAY COLUMN
+        col_index = None
+        for col in range(3, ws.max_column + 1):
+            if str(ws.cell(row=2, column=col).value) == today_str:
+                col_index = col
+                break
 
-    # ==============================
-    # FIND TODAY COLUMN
-    # ==============================
+        if col_index is None:
+            col_index = ws.max_column + 1
+            ws.cell(row=2, column=col_index).value = today_str
 
-    col_index = None
+        # FUNCTION (INSIDE)
+        def clean_text(text):
+            return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
+    
+        def update_excel(name, value):
+    
+            clean_name = clean_text(name)
+    
+            for row in range(4, ws.max_row + 1):
 
-    for col in range(3, ws.max_column + 1):
-        if str(ws.cell(row=2, column=col).value) == today_str:
-            col_index = col
-            break
+                col1 = ws.cell(row=row, column=1).value
+                col2 = ws.cell(row=row, column=2).value
 
-    # Create new column if not found
-    if col_index is None:
-        col_index = ws.max_column + 1
-        ws.cell(row=2, column=col_index).value = today_str
-        # ==============================
-# SAVE TOTALS ALSO
-# ==============================
+                combined = f"{col1} {col2}"
+                clean_combined = clean_text(combined)
 
-    update_excel("Total", total_tr)
-    update_excel("TOTAL LF CONSUMPTION", total_lf)
-    update_excel("TOTAL LCP CONSUMPTION", total_lcp)
-    update_excel("TOTAL CASTER CONSUMPTION", total_caster)
-    update_excel("TOTAL BOF CONSUMPTION", total_bof)
-    update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
+                if clean_name in clean_combined:
+                    ws.cell(row=row, column=col_index).value = int(value)
+                    st.write(f"✅ Updated: {name} → Row {row}")
+                    return
 
-    # ==============================
-    # UPDATE FUNCTION (FIXED)
-    # ==============================
-    def clean_text(text):
-        return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
-
-    def update_excel(name, value):
-
-        clean_name = clean_text(name)
-
-        for row in range(4, ws.max_row + 1):
-
-            col1 = ws.cell(row=row, column=1).value
-            col2 = ws.cell(row=row, column=2).value
-
-            combined = f"{col1} {col2}"
-            clean_combined = clean_text(combined)
-
-            # ✅ NOW IT WILL ALSO MATCH TOTAL ROWS
-            if clean_name in clean_combined:
-                ws.cell(row=row, column=col_index).value = int(value)
-                st.write(f"✅ Updated: {name} → Row {row}")
-                return
-
-        st.write(f"❌ NOT FOUND: {name}")
-    # ==============================
-    # UPDATE ALL INPUT VALUES
-    # ==============================
-
-    for group in [
-        tr_values, lhf_values, lcss9_values, lcss8_values,
-        ccm_values, fan_values, rcph_values, lcp_values, other_values
-    ]:
-        for key, val in group.items():
-            update_excel(key, val)
-
-    # Heat values
-    update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
-    update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
+            st.write(f"❌ NOT FOUND: {name}")
 
     # ==============================
-    # SAVE (KEEP FORMULAS SAFE)
+    # UPDATE INPUT VALUES
     # ==============================
 
-    wb.calculation.fullCalcOnLoad = True
-    wb.save(FILE_NAME)
+        for group in [
+            tr_values, lhf_values, lcss9_values, lcss8_values,
+            ccm_values, fan_values, rcph_values, lcp_values, other_values
+        ]:
+            for key, val in group.items():
+                update_excel(key, val)
 
-    st.success("✅ Data Saved Successfully")
+        # HEAT
+        update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
+        update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
+
+    # ==============================
+        # ✅ TOTALS (INSIDE SUBMIT ONLY)
+    # ==============================
+
+        update_excel("Total", total_tr)
+        update_excel("TOTAL LF CONSUMPTION", total_lf)
+        update_excel("TOTAL LCP CONSUMPTION", total_lcp)
+        update_excel("TOTAL CASTER CONSUMPTION", total_caster)
+        update_excel("TOTAL BOF CONSUMPTION", total_bof)
+        update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
+
+    # SAVE
+        wb.calculation.fullCalcOnLoad = True
+        wb.save(FILE_NAME)
+
+        st.success("✅ Data Saved Successfully")
 
 # ==============================
 # DISPLAY DATA (LIVE VIEW)
