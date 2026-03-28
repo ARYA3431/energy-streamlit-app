@@ -160,7 +160,7 @@ st.metric("📊 PER TON CONSUMPTION", round(per_ton, 2))
 # SUBMIT BUTTON
 # ==============================
 
-    if st.button("Submit"):
+if st.button("Submit"):
     
         wb = load_workbook(FILE_NAME, data_only=False)
         ws = wb[current_month]
