@@ -180,6 +180,16 @@ if st.button("Submit"):
     if col_index is None:
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
+        # ==============================
+# SAVE TOTALS ALSO
+# ==============================
+
+    update_excel("Total", total_tr)
+    update_excel("TOTAL LF CONSUMPTION", total_lf)
+    update_excel("TOTAL LCP CONSUMPTION", total_lcp)
+    update_excel("TOTAL CASTER CONSUMPTION", total_caster)
+    update_excel("TOTAL BOF CONSUMPTION", total_bof)
+    update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
 
     # ==============================
     # UPDATE FUNCTION (FIXED)
@@ -197,21 +207,15 @@ if st.button("Submit"):
             col2 = ws.cell(row=row, column=2).value
 
             combined = f"{col1} {col2}"
-
             clean_combined = clean_text(combined)
 
-            # Skip TOTAL rows
-            if "TOTAL" in clean_combined:
-                continue
-
-            # ✅ FLEXIBLE MATCH
+            # ✅ NOW IT WILL ALSO MATCH TOTAL ROWS
             if clean_name in clean_combined:
                 ws.cell(row=row, column=col_index).value = int(value)
                 st.write(f"✅ Updated: {name} → Row {row}")
                 return
 
         st.write(f"❌ NOT FOUND: {name}")
-
     # ==============================
     # UPDATE ALL INPUT VALUES
     # ==============================
