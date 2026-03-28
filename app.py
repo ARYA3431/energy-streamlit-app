@@ -176,6 +176,27 @@ if st.button("Submit"):
             col_index = ws.max_column + 1
             ws.cell(row=2, column=col_index).value = today_str
 
+    
+        def get_previous_value(name):
+
+            for row in range(4, ws.max_row + 1):
+
+                col1 = ws.cell(row=row, column=1).value
+                col2 = ws.cell(row=row, column=2).value
+
+                combined = f"{col1} {col2}".upper()
+
+                if name.upper() in combined:
+
+                # Previous column
+                prev_col = col_index - 1
+
+                if prev_col >= 3:
+                    prev_value = ws.cell(row=row, column=prev_col).value
+                    return prev_value if prev_value else 0
+
+        return 0
+
         # FUNCTION (INSIDE)
         def clean_text(text):
             return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
