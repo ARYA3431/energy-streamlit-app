@@ -5,6 +5,54 @@ import os
 from openpyxl import load_workbook
 
 # ==============================
+# ✅ STEP 1: PUT FUNCTIONS HERE
+# ==============================
+
+def clean_text(text):
+    return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
+
+def update_excel(ws, col_index, name, value):
+    clean_name = clean_text(name)
+
+    for row in range(4, ws.max_row + 1):
+
+        col1 = ws.cell(row=row, column=1).value
+        col2 = ws.cell(row=row, column=2).value
+
+        combined = f"{col1} {col2}"
+        clean_combined = clean_text(combined)
+
+        if "TOTAL" in clean_combined:
+            continue
+
+        if clean_name in clean_combined:
+            ws.cell(row=row, column=col_index).value = int(value)
+            return
+
+
+def get_previous_value(ws, name, col_index):
+    clean_name = clean_text(name)
+
+    for row in range(4, ws.max_row + 1):
+
+        col1 = ws.cell(row=row, column=1).value
+        col2 = ws.cell(row=row, column=2).value
+
+        combined = f"{col1} {col2}"
+        clean_combined = clean_text(combined)
+
+        if clean_name in clean_combined:
+            prev_val = ws.cell(row=row, column=col_index - 1).value
+            return prev_val if prev_val else 0
+
+    return 0
+
+
+def calculate_per_day(ws, col_index, name, today_value):
+    yesterday_value = get_previous_value(ws, name, col_index)
+    return today_value - yesterday_value
+
+# ==============================
 # BASIC SETTINGS
 # ==============================
 
@@ -287,7 +335,6 @@ for group in [
     # ==============================
         # ✅ TOTALS (INSIDE SUBMIT ONLY)
     # ==============================
-
             update_excel("Total", total_tr)
             update_excel("TOTAL LF CONSUMPTION", total_lf)
             update_excel("TOTAL LCP CONSUMPTION", total_lcp)
