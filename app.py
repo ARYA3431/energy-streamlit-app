@@ -163,6 +163,40 @@ with col8:
     st.metric("⚙ HEAT CAST", int(heat_cast))
 
 st.metric("📊 PER TON CONSUMPTION", round(per_ton, 2))
+# ==============================
+# AUTO PER-DAY FUNCTION
+# ==============================
+
+def calculate_per_day(ws, col_index, name, today_value):
+
+    def clean_text(text):
+        return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
+
+    clean_name = clean_text(name)
+
+    for row in range(4, ws.max_row + 1):
+
+        col1 = ws.cell(row=row, column=1).value
+        col2 = ws.cell(row=row, column=2).value
+
+        combined = f"{col1} {col2}"
+        clean_combined = clean_text(combined)
+
+        if clean_name in clean_combined:
+
+            prev_col = col_index - 1
+
+            if prev_col >= 3:
+                prev_value = ws.cell(row=row, column=prev_col).value
+                prev_value = prev_value if prev_value else 0
+            else:
+                prev_value = 0
+
+            per_day = today_value - prev_value
+
+            return per_day
+
+    return 0
 
 # ==============================
 # SUBMIT BUTTON
@@ -226,6 +260,21 @@ if st.button("Submit"):
                     return
 
             st.write(f"❌ NOT FOUND: {name}")
+            # ==============================
+# PER DAY CALCULATIONS (AUTO)
+# ==============================
+
+tr_per_day = calculate_per_day(ws, col_index, "Total", total_tr)
+
+lcp_per_day = calculate_per_day(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
+
+lf_per_day = calculate_per_day(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
+
+caster_per_day = calculate_per_day(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
+
+bof_per_day = calculate_per_day(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
+
+rcph_per_day = calculate_per_day(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
 
     # ==============================
     # UPDATE INPUT VALUES
@@ -241,6 +290,7 @@ if st.button("Submit"):
         # HEAT
         update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
         update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
+    
 
     # ==============================
         # ✅ TOTALS (INSIDE SUBMIT ONLY)
