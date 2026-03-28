@@ -195,7 +195,7 @@ if st.button("Submit"):
                         prev_value = ws.cell(row=row, column=prev_col).value
                         return prev_value if prev_value else 0
 
-        return 0
+            return 0
 
         # FUNCTION (INSIDE)
         def clean_text(text):
