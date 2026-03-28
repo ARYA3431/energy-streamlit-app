@@ -90,25 +90,78 @@ heat_values = input_grid(heat_labels)
 # CALCULATIONS
 # ==============================
 
+# ==============================
+# LIVE CALCULATIONS (BEFORE SUBMIT)
+# ==============================
+
+st.subheader("⚡ Live Energy Calculation")
+
+# TOTAL TR
 total_tr = sum(tr_values.values())
 
+# TOTAL LF
 total_lf = sum(lhf_values.values())
 
+# TOTAL LCP
 total_lcp = sum(lcp_values.values())
 
+# TOTAL CASTER
 total_lcss9 = sum(lcss9_values.values())
 total_lcss8 = sum(lcss8_values.values())
-
 total_ccm = sum(ccm_values.values())
-
 grinder = other_values["Grinder I/C Caster"]
 
 total_caster = total_lcss8 + total_lcss9 + total_ccm + grinder
 
+# TOTAL BOF
 total_bof = total_tr - total_lcp - total_caster
 
+# TOTAL RCPH
 total_rcph = sum(rcph_values.values())
 
+# HEAT BASED CALCULATION
+heat_tap = heat_values["No. of Heat Tap"]
+heat_cast = heat_values["No. of Heat Cast"]
+
+per_ton = 0
+if heat_cast > 0:
+    per_ton = total_tr / heat_cast
+
+# ==============================
+# DISPLAY (DASHBOARD STYLE)
+# ==============================
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("⚡ TOTAL TR", int(total_tr))
+
+with col2:
+    st.metric("🔥 TOTAL LF", int(total_lf))
+
+with col3:
+    st.metric("🏭 TOTAL LCP", int(total_lcp))
+
+col4, col5, col6 = st.columns(3)
+
+with col4:
+    st.metric("🏗 TOTAL CASTER", int(total_caster))
+
+with col5:
+    st.metric("🏭 TOTAL BOF", int(total_bof))
+
+with col6:
+    st.metric("🌡 TOTAL RCPH", int(total_rcph))
+
+col7, col8 = st.columns(2)
+
+with col7:
+    st.metric("🔢 HEAT TAP", int(heat_tap))
+
+with col8:
+    st.metric("⚙ HEAT CAST", int(heat_cast))
+
+st.metric("📊 PER TON CONSUMPTION", round(per_ton, 2))
 
 # ==============================
 # SUBMIT BUTTON
