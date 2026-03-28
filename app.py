@@ -192,7 +192,7 @@ if st.button("Submit"):
     # UPDATE FUNCTION (FIXED)
     # ==============================
 
-    def update_excel(name, value):
+   def update_excel(name, value):
         for row in range(4, ws.max_row + 1):
 
             col1 = str(ws.cell(row=row, column=1).value).strip()
@@ -200,14 +200,19 @@ if st.button("Submit"):
 
             combined = f"{col1} {col2}".strip()
 
-            # 🚫 Skip TOTAL rows (IMPORTANT)
             if "TOTAL" in combined.upper():
                 continue
 
-            # Flexible matching
             if name.upper() in combined.upper():
                 ws.cell(row=row, column=col_index).value = int(value)
+
+                # ✅ DEBUG PRINT
+                st.write(f"Updated: {name} → Row {row}")
+    
                 return
+
+    # ❌ IF NOT FOUND
+    st.write(f"❌ NOT FOUND: {name}")
 
     # ==============================
     # UPDATE ALL INPUT VALUES
