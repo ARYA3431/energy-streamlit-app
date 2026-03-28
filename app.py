@@ -320,35 +320,46 @@ if st.button("Submit"):
     # UPDATE INPUT VALUES
     # ==============================
 
+# ==============================
+# UPDATE ALL INPUT VALUES
+# ==============================
+
 for group in [
     tr_values, lhf_values, lcss9_values, lcss8_values,
-        ccm_values, fan_values, rcph_values, lcp_values, other_values
-    ]:
-        for key, val in group.items():
-         #   update_excel(key, val)
+    ccm_values, fan_values, rcph_values, lcp_values, other_values
+]:
+    for key, val in group.items():
+        update_excel(ws, col_index, key, val)
 
-        # HEAT
-            update_excel("No. of Heat Tap", heat_values["No. of Heat Tap"])
-            update_excel("No. of Heat Cast", heat_values["No. of Heat Cast"])
-    
+# ==============================
+# HEAT VALUES (OUTSIDE LOOP)
+# ==============================
 
-    # ==============================
-        # ✅ TOTALS (INSIDE SUBMIT ONLY)
-    # ==============================
-            update_excel("Total", total_tr)
-            update_excel("TOTAL LF CONSUMPTION", total_lf)
-            update_excel("TOTAL LCP CONSUMPTION", total_lcp)
-            update_excel("TOTAL CASTER CONSUMPTION", total_caster)
-            update_excel("TOTAL BOF CONSUMPTION", total_bof)
-            update_excel("TOTAL RCPH CONSUMPTION", total_rcph)
-            update_excel("LCP PER DAY CONSUMPTION", lcp_per_day)
+update_excel(ws, col_index, "No. of Heat Tap", heat_values["No. of Heat Tap"])
+update_excel(ws, col_index, "No. of Heat Cast", heat_values["No. of Heat Cast"])
 
-    # SAVE
-            wb.calculation.fullCalcOnLoad = True
-            wb.save(FILE_NAME)
+# ==============================
+# TOTALS (OUTSIDE LOOP)
+# ==============================
 
-            st.success("✅ Data Saved Successfully")
+update_excel(ws, col_index, "Total", total_tr)
+update_excel(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
+update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
+update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
+update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
+update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
 
+# PER DAY
+update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
+
+# ==============================
+# SAVE (ONLY ONCE)
+# ==============================
+
+wb.calculation.fullCalcOnLoad = True
+wb.save(FILE_NAME)
+
+st.success("✅ Data Saved Successfully")
 # ==============================
 # DISPLAY DATA (LIVE VIEW)
 # ==============================
