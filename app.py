@@ -199,10 +199,10 @@ if st.button("Submit"):
     prev_lf = get_previous_total(ws, col_index, "TOTAL LF CONSUMPTION")
     prev_total = get_previous_total(ws, col_index, "Total")
     prev_pid1 = get_previous_total(ws, col_index, "PRIMARY ID FAN #1")
-    prev_pid2 = get_previous_total(ws, col_index, "CONSUMPTION PRIMARY ID FAN #2")
-    prev_sid1 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#1")
-    prev_sid2 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#2")
-    prev_sid3 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#3")
+    prev_pid2 = get_previous_total(ws, col_index, "PRIMARY ID FAN #2")
+    prev_sid1 = get_previous_total(ws, col_index, "SECONDARY ID FAN#1")
+    prev_sid2 = get_previous_total(ws, col_index, "SECONDARY ID FAN#2")
+    prev_sid3 = get_previous_total(ws, col_index, "SECONDARY ID FAN#3")
 
     # ==============================
     # PER DAY
@@ -215,6 +215,11 @@ if st.button("Submit"):
     lf_per_day = total_lf - prev_lf
     total_energy_per_day = caster_per_day + bof_per_day + lf_per_day
     pid1_per_day = fan_values["PRIMARY ID FAN #1"] - prev_pid1
+    pid2_per_day = fan_values["PRIMARY ID FAN #2"] - prev_pid2
+    sid1_per_day = fan_values["SECONDARY ID FAN#1"] - prev_sid1
+    sid2_per_day = fan_values["SECONDARY ID FAN#2"] - prev_sid2
+    sid3_per_day = fan_values["SECONDARY ID FAN#3"] - prev_sid3
+    
      
     
 
@@ -254,6 +259,10 @@ if st.button("Submit"):
     update_excel(ws, col_index, "LF CONSUMPTION PER DAY", lf_per_day)
     update_excel(ws, col_index, "TOTAL ENERGY CONSUMPTION PER DAY", total_energy_per_day)
     update_excel(ws, col_index, "CONSUMPTION PRIMARY ID FAN #1", pid1_per_day)
+    update_excel(ws, col_index, "CONSUMPTION PRIMARY ID FAN #2", pid2_per_day)
+    update_excel(ws, col_index, "CONSUMPTION SECONDARY ID FAN #1", sid1_per_day)
+    update_excel(ws, col_index, "CONSUMPTION SECONDARY ID FAN #2", sid2_per_day)
+    update_excel(ws, col_index, "CONSUMPTION SECONDARY ID FAN #3", sid3_per_day)
 
     # SAVE FILE
     wb.calculation.fullCalcOnLoad = True
