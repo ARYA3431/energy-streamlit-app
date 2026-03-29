@@ -22,8 +22,8 @@ def update_excel(ws, col_index, name, value):
         combined = f"{col1} {col2}"
         clean_combined = clean_text(combined)
 
-        if "TOTAL" in clean_combined:
-            continue
+        #if "TOTAL" in clean_combined:
+         #   continue
 
         if clean_name in clean_combined:
             ws.cell(row=row, column=col_index).value = int(value)
