@@ -30,7 +30,10 @@ def get_previous_total(ws, col_index, name):
             if value is None:
                 return 0
 
-            return float(value)
+            try:
+                return float(value)
+            except:
+                return 0
 
     return 0
 
