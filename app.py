@@ -128,34 +128,34 @@ heat_values = input_grid(heat_labels)
 # ==============================
 # LIVE CALCULATION
 # ==============================
-st.subheader("⚡ Live Calculation") 
-total_tr = sum(tr_values.values()) 
-total_lf = sum(lhf_values.values()) 
-total_lcp = sum(lcp_values.values()) 
-total_caster = ( sum(lcss8_values.values()) + sum(lcss9_values.values()) + sum(ccm_values.values()) + other_values["Grinder I/C Caster"] ) 
-total_bof = total_tr - total_lcp - total_caster 
-total_rcph = sum(rcph_values.values())
-heat_tap = heat_values["No. of Heat Tap"]
-heat_cast = heat_values["No. of Heat Cast"]
+# st.subheader("⚡ Live Calculation") 
+# total_tr = sum(tr_values.values()) 
+# total_lf = sum(lhf_values.values()) 
+#total_lcp = sum(lcp_values.values()) 
+#total_caster = ( sum(lcss8_values.values()) + sum(lcss9_values.values()) + sum(ccm_values.values()) + other_values["Grinder I/C Caster"] ) 
+#total_bof = total_tr - total_lcp - total_caster 
+#total_rcph = sum(rcph_values.values())
+#heat_tap = heat_values["No. of Heat Tap"]
+#heat_cast = heat_values["No. of Heat Cast"]
 
 
 # ==============================
 # DISPLAY
 # ==============================
 
-col1, col2, col3 = st.columns(3)
-col1.metric("TOTAL TR", int(total_tr))
-col2.metric("TOTAL LF", int(total_lf))
-col3.metric("TOTAL LCP", int(total_lcp))
+#col1, col2, col3 = st.columns(3)
+#col1.metric("TOTAL TR", int(total_tr))
+#col2.metric("TOTAL LF", int(total_lf))
+#col3.metric("TOTAL LCP", int(total_lcp))
 
-col4, col5, col6 = st.columns(3)
-col4.metric("TOTAL CASTER", int(total_caster))
-col5.metric("TOTAL BOF", int(total_bof))
-col6.metric("TOTAL RCPH", int(total_rcph))
+#col4, col5, col6 = st.columns(3)
+#col4.metric("TOTAL CASTER", int(total_caster))
+#col5.metric("TOTAL BOF", int(total_bof))
+#col6.metric("TOTAL RCPH", int(total_rcph))
 
-col7, col8 = st.columns(2)
-col7.metric("HEAT TAP", int(heat_tap))
-col8.metric("HEAT CAST", int(heat_cast))
+#col7, col8 = st.columns(2)
+#col7.metric("HEAT TAP", int(heat_tap))
+#col8.metric("HEAT CAST", int(heat_cast))
 
 
 
