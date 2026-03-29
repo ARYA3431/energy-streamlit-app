@@ -316,7 +316,16 @@ for col in df.columns[2:]:
     df[col] = df[col].apply(lambda x: int(x) if x != "" else "")
 
 
-if "caster_per_day" in st.session_state:
+required_keys = [
+    "caster_per_day",
+    "bof_per_day",
+    "lf_per_day",
+    "total_energy_per_day",
+    "caster_per_ton",
+    "total_per_ton"
+]
+
+if all(key in st.session_state for key in required_keys):
 
     st.subheader("📊 Final Calculated Values")
 
