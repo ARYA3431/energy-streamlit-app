@@ -148,8 +148,6 @@ total_rcph = sum(rcph_values.values())
 heat_tap = heat_values["No. of Heat Tap"]
 heat_cast = heat_values["No. of Heat Cast"]
 
-per_ton = total_tr / heat_cast if heat_cast > 0 else 0
-
 # ==============================
 # DISPLAY
 # ==============================
@@ -216,6 +214,7 @@ if st.button("Submit"):
     bof_per_day = total_bof - prev_bof - 0.65*rcph_per_day - lcp_per_day
     lf_per_day = total_lf - prev_lf
     total_energy_per_day = caster_per_day + bof_per_day + lf_per_day
+     
     
 
     # ==============================
