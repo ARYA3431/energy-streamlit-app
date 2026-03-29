@@ -171,10 +171,6 @@ total_rcph = sum(rcph_values.values())
 
 heat_tap = heat_values["No. of Heat Tap"]
 heat_cast = heat_values["No. of Heat Cast"]
-# ==============================
-# STEP 3: PER DAY CALCULATION
-# ==============================
-lcp_per_day = total_lcp - lcp_yesterday
 
 per_ton = total_tr / heat_cast if heat_cast > 0 else 0
 
