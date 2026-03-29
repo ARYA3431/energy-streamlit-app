@@ -215,12 +215,17 @@ if st.button("Submit"):
     if col_index is None:
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
-        
+
+    # ==============================
+    # ✅ GET YESTERDAY VALUE
+    # ==============================
+    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+
     # ==============================
     # ✅ CALCULATE PER DAY
     # ==============================
     total_lcp = sum(lcp_values.values())   # SAFE inside block
-    
+    lcp_per_day = total_lcp - lcp_yesterday
 
     # ==============================
     # UPDATE INPUT VALUES
@@ -258,6 +263,12 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
+
+    # ==============================
+    # ✅ PER DAY SAVE
+    # ==============================
+    update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
+
     # ==============================
     # SAVE
     # ==============================
