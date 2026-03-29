@@ -233,13 +233,12 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
-
-    # PER DAY (LCP example)
-    lcp_today = total_lcp
-    lcp_per_day = per_day(ws, col_index, "LCP FDR-1", lcp_values["LCP FDR-1"]) + \
-                  per_day(ws, col_index, "LCP FDR-3", lcp_values["LCP FDR-3"])
-
+    update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
     update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
+
+
+    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+    lcp_per_day = total_lcp - lcp_yesterday
 
     # SAVE
     wb.calculation.fullCalcOnLoad = True
