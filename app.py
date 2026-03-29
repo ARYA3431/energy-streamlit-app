@@ -198,7 +198,7 @@ if st.button("Submit"):
     prev_bof = get_previous_total(ws, col_index, "TOTAL BOF CONSUMPTION")
     prev_lf = get_previous_total(ws, col_index, "TOTAL LF CONSUMPTION")
     prev_total = get_previous_total(ws, col_index, "Total")
-    prev_pid1 = get_previous_total(ws, col_index, "CONSUMPTION PRIMARY ID FAN #1")
+    prev_pid1 = get_previous_total(ws, col_index, "PRIMARY ID FAN #1")
     prev_pid2 = get_previous_total(ws, col_index, "CONSUMPTION PRIMARY ID FAN #2")
     prev_sid1 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#1")
     prev_sid2 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#2")
