@@ -355,10 +355,10 @@ update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
 # SAVE (ONLY ONCE)
 # ==============================
 
-    wb.calculation.fullCalcOnLoad = True
-    wb.save(FILE_NAME)
+wb.calculation.fullCalcOnLoad = True
+wb.save(FILE_NAME)
 
-    st.success("✅ Data Saved Successfully")
+st.success("✅ Data Saved Successfully")
 # ==============================
 # DISPLAY DATA (LIVE VIEW)
 # ==============================
