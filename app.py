@@ -329,7 +329,7 @@ if st.button("Submit"):
             ccm_values, fan_values, rcph_values, lcp_values, other_values
         ]:
             for key, val in group.items():
-                update_excel(ws, col_index, key, val)
+                update_excel(ws, col_index, name, value)
 
 # ==============================
 # HEAT VALUES (OUTSIDE LOOP)
