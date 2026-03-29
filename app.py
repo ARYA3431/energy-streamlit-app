@@ -343,7 +343,7 @@ if all(key in st.session_state for key in required_keys):
 
     col4.metric("TOTAL PER DAY", round(st.session_state["total_energy_per_day"]))
     col5.metric("CASTER PER TON", round(st.session_state["caster_per_ton"], 2))
-    col6.metric("TOTAL PER TON", round(st.session_state["total_per_ton"], 2))
+    col6.metric("BOF PER TON", round(st.session_state["bof_per_ton"], 2))
 
     col7, col8 = st.columns(2)
 
