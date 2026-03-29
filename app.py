@@ -324,7 +324,7 @@ if "caster_per_day" in st.session_state:
 
     col1.metric("CASTER PER DAY", int(st.session_state["caster_per_day"]))
     col2.metric("BOF PER DAY", int(st.session_state["bof_per_day"]))
-    col3.metric("LF PER DAY", int(st.session_state["LF_per_day"]))
+    col3.metric("LF PER DAY", int(st.session_state["lf_per_day"]))
 
     col4, col5, col6 = st.columns(3)
 
