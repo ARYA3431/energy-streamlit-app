@@ -207,7 +207,9 @@ if st.button("Submit"):
     wb = load_workbook(FILE_NAME, data_only=False)
     ws = wb[current_month]
 
-    # Find / Create column
+    # ==============================
+    # FIND / CREATE COLUMN
+    # ==============================
     col_index = None
     for col in range(3, ws.max_column + 1):
         if str(ws.cell(row=2, column=col).value) == today_str:
@@ -218,13 +220,20 @@ if st.button("Submit"):
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
 
-    # ✅ STEP 2
+    # ==============================
+    # ✅ GET YESTERDAY VALUE
+    # ==============================
     lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
 
-    # ✅ STEP 3 (THIS WAS MISSING)
+    # ==============================
+    # ✅ CALCULATE PER DAY
+    # ==============================
+    total_lcp = sum(lcp_values.values())   # SAFE inside block
     lcp_per_day = total_lcp - lcp_yesterday
 
+    # ==============================
     # UPDATE INPUT VALUES
+    # ==============================
     for group in [
         tr_values, lhf_values, lcss9_values, lcss8_values,
         ccm_values, fan_values, rcph_values, lcp_values, other_values
@@ -232,11 +241,26 @@ if st.button("Submit"):
         for key, val in group.items():
             update_excel(ws, col_index, key, val)
 
+    # ==============================
     # HEAT
+    # ==============================
     update_excel(ws, col_index, "No. of Heat Tap", heat_tap)
     update_excel(ws, col_index, "No. of Heat Cast", heat_cast)
 
+    # ==============================
     # TOTALS
+    # ==============================
+    total_tr = sum(tr_values.values())
+    total_lf = sum(lhf_values.values())
+    total_caster = (
+        sum(lcss8_values.values()) +
+        sum(lcss9_values.values()) +
+        sum(ccm_values.values()) +
+        other_values["Grinder I/C Caster"]
+    )
+    total_bof = total_tr - total_lcp - total_caster
+    total_rcph = sum(rcph_values.values())
+
     update_excel(ws, col_index, "Total", total_tr)
     update_excel(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
     update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
@@ -244,10 +268,14 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
 
-    # ✅ STEP 4
+    # ==============================
+    # ✅ PER DAY SAVE
+    # ==============================
     update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
 
+    # ==============================
     # SAVE
+    # ==============================
     wb.calculation.fullCalcOnLoad = True
     wb.save(FILE_NAME)
 
