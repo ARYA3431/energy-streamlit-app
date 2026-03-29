@@ -4,41 +4,8 @@ import datetime
 import os
 from openpyxl import load_workbook
 
-def get_previous_total(ws, col_index, name):
-
-    prev_col = col_index - 1
-
-    if prev_col < 3:
-        return 0  # No previous data
-
-    def clean_text(text):
-        return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
-
-    clean_name = clean_text(name)
-
-    for row in range(4, ws.max_row + 1):
-
-        col1 = ws.cell(row=row, column=1).value
-        col2 = ws.cell(row=row, column=2).value
-
-        combined = f"{col1} {col2}"
-        clean_combined = clean_text(combined)
-
-        if clean_name in clean_combined:
-            value = ws.cell(row=row, column=prev_col).value
-
-            if value is None:
-                return 0
-
-            try:
-                return float(value)
-            except:
-                return 0
-
-    return 0
-
 # ==============================
-# BASIC SETTINGS
+# FILE SETTINGS
 # ==============================
 
 FILE_NAME = "Energy Sheet.xlsx"
@@ -53,7 +20,7 @@ today_str = datetime.datetime.now().strftime("%d-%m-%Y")
 st.title("⚡ Energy Monitoring System")
 
 # ==============================
-# HELPER FUNCTIONS (TOP ONLY)
+# HELPER FUNCTIONS
 # ==============================
 
 def clean_text(text):
@@ -73,28 +40,34 @@ def update_excel(ws, col_index, name, value):
             ws.cell(row=row, column=col_index).value = int(value)
             return
 
-def get_previous_value(ws, name, col_index):
-    clean_name = clean_text(name)
+def get_previous_total(ws, col_index, name):
+
+    prev_col = col_index - 1
+
+    if prev_col < 3:
+        return 0
 
     for row in range(4, ws.max_row + 1):
-        col1 = ws.cell(row=row, column=1).value
-        col2 = ws.cell(row=row, column=2).value
+        col1 = str(ws.cell(row=row, column=1).value)
+        col2 = str(ws.cell(row=row, column=2).value)
 
-        combined = f"{col1} {col2}"
-        clean_combined = clean_text(combined)
+        combined = (col1 + " " + col2).upper()
 
-        if clean_name in clean_combined:
-            val = ws.cell(row=row, column=col_index - 1).value
-            return val if val else 0
+        if name.upper() in combined:
+            value = ws.cell(row=row, column=prev_col).value
+
+            if value is None:
+                return 0
+
+            try:
+                return float(value)
+            except:
+                return 0
 
     return 0
 
-def per_day(ws, col_index, name, today_val):
-    yesterday = get_previous_value(ws, name, col_index)
-    return today_val - yesterday
-
 # ==============================
-# INPUT FUNCTION
+# INPUT GRID
 # ==============================
 
 def input_grid(labels):
@@ -107,7 +80,7 @@ def input_grid(labels):
     return values
 
 # ==============================
-# INPUT LABELS
+# LABELS
 # ==============================
 
 tr_labels = [
@@ -178,7 +151,7 @@ heat_cast = heat_values["No. of Heat Cast"]
 per_ton = total_tr / heat_cast if heat_cast > 0 else 0
 
 # ==============================
-# DISPLAY METRICS
+# DISPLAY
 # ==============================
 
 col1, col2, col3 = st.columns(3)
@@ -206,9 +179,7 @@ if st.button("Submit"):
     wb = load_workbook(FILE_NAME, data_only=False)
     ws = wb[current_month]
 
-    # ==============================
-    # FIND / CREATE COLUMN
-    # ==============================
+    # Find column
     col_index = None
     for col in range(3, ws.max_column + 1):
         if str(ws.cell(row=2, column=col).value) == today_str:
@@ -220,19 +191,31 @@ if st.button("Submit"):
         ws.cell(row=2, column=col_index).value = today_str
 
     # ==============================
-    # ✅ GET YESTERDAY VALUE
+    # PREVIOUS VALUES
     # ==============================
-    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+
+    prev_lcp = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+    prev_rcph = get_previous_total(ws, col_index, "TOTAL RCPH CONSUMPTION")
+    prev_caster = get_previous_total(ws, col_index, "TOTAL CASTER CONSUMPTION")
+    prev_bof = get_previous_total(ws, col_index, "TOTAL BOF CONSUMPTION")
+    prev_lf = get_previous_total(ws, col_index, "TOTAL LF CONSUMPTION")
+    prev_total = get_previous_total(ws, col_index, "Total")
 
     # ==============================
-    # ✅ CALCULATE PER DAY
+    # PER DAY
     # ==============================
-    total_lcp = sum(lcp_values.values())   # SAFE inside block
-    lcp_per_day = total_lcp - lcp_yesterday
+
+    lcp_per_day = total_lcp - prev_lcp
+    rcph_per_day = total_rcph - prev_rcph
+    caster_per_day = total_caster - prev_caster
+    bof_per_day = total_bof - prev_bof
+    lf_per_day = total_lf - prev_lf
+    total_energy_per_day = total_tr - prev_total
 
     # ==============================
-    # UPDATE INPUT VALUES
+    # SAVE INPUTS
     # ==============================
+
     for group in [
         tr_values, lhf_values, lcss9_values, lcss8_values,
         ccm_values, fan_values, rcph_values, lcp_values, other_values
@@ -240,25 +223,12 @@ if st.button("Submit"):
         for key, val in group.items():
             update_excel(ws, col_index, key, val)
 
-    # ==============================
-    # HEAT
-    # ==============================
     update_excel(ws, col_index, "No. of Heat Tap", heat_tap)
     update_excel(ws, col_index, "No. of Heat Cast", heat_cast)
 
     # ==============================
-    # TOTALS
+    # SAVE TOTALS
     # ==============================
-    total_tr = sum(tr_values.values())
-    total_lf = sum(lhf_values.values())
-    total_caster = (
-        sum(lcss8_values.values()) +
-        sum(lcss9_values.values()) +
-        sum(ccm_values.values()) +
-        other_values["Grinder I/C Caster"]
-    )
-    total_bof = total_tr - total_lcp - total_caster
-    total_rcph = sum(rcph_values.values())
 
     update_excel(ws, col_index, "Total", total_tr)
     update_excel(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
@@ -268,17 +238,22 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
 
     # ==============================
-    # ✅ PER DAY SAVE
+    # SAVE PER DAY
     # ==============================
-    update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
 
-    # ==============================
-    # SAVE
-    # ==============================
+    update_excel(ws, col_index, "LCP CONSUMPTION PER DAY", lcp_per_day)
+    update_excel(ws, col_index, "RCPH CONSUMPTION PER DAY", rcph_per_day)
+    update_excel(ws, col_index, "CASTER CONSUMPTION PER DAY", caster_per_day)
+    update_excel(ws, col_index, "BOF CONSUMPTION PER DAY", bof_per_day)
+    update_excel(ws, col_index, "LF CONSUMPTION PER DAY", lf_per_day)
+    update_excel(ws, col_index, "TOTAL ENERGY CONSUMPTION PER DAY", total_energy_per_day)
+
+    # SAVE FILE
     wb.calculation.fullCalcOnLoad = True
     wb.save(FILE_NAME)
 
     st.success("✅ Data Saved Successfully")
+
 # ==============================
 # DISPLAY TABLE
 # ==============================
@@ -289,7 +264,6 @@ ws_data = wb_data[current_month]
 data = list(ws_data.values)
 df = pd.DataFrame(data[2:], columns=data[1])
 
-# Fix date columns
 new_cols = list(df.columns[:2])
 for col in df.columns[2:]:
     try:
@@ -299,7 +273,6 @@ for col in df.columns[2:]:
 
 df.columns = new_cols
 
-# Clean display
 for col in df.columns[2:]:
     df[col] = pd.to_numeric(df[col], errors='coerce')
 
