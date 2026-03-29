@@ -215,12 +215,7 @@ if st.button("Submit"):
     if col_index is None:
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
-
-    # ==============================
-    # ✅ GET YESTERDAY VALUE
-    # ==============================
-    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
-
+        
     # ==============================
     # ✅ CALCULATE PER DAY
     # ==============================
