@@ -284,8 +284,8 @@ if st.button("Submit"):
     st.session_state["total_energy_per_day"] = total_energy_per_day
     
     st.session_state["caster_per_ton"] = caster_per_ton
-    st.session_state["caster_per_ton"] = bof_per_ton
-    st.session_state["caster_per_ton"] = lf_per_ton
+    st.session_state["bof_per_ton"] = bof_per_ton
+    st.session_state["lf_per_ton"] = lf_per_ton
     st.session_state["total_per_ton"] = total_per_ton
 
     st.success("✅ Data Saved Successfully")
