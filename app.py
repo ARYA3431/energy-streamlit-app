@@ -322,6 +322,8 @@ required_keys = [
     "lf_per_day",
     "total_energy_per_day",
     "caster_per_ton",
+    "bof_per_ton",
+    "lf_per_ton"
     "total_per_ton"
 ]
 
