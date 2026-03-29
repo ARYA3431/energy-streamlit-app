@@ -210,7 +210,7 @@ if st.button("Submit"):
     caster_per_day = total_caster - prev_caster + rcph_per_day*0.65
     bof_per_day = total_bof - prev_bof - 0.65*rcph_per_day - lcp_per_day
     lf_per_day = total_lf - prev_lf
-    total_energy_per_day = total_tr - prev_total
+    total_energy_per_day = caster_per_day + bof_per_day + lf_per_day
 
     # ==============================
     # SAVE INPUTS
