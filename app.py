@@ -4,6 +4,36 @@ import datetime
 import os
 from openpyxl import load_workbook
 
+def get_previous_total(ws, col_index, name):
+
+    prev_col = col_index - 1
+
+    if prev_col < 3:
+        return 0  # No previous data
+
+    def clean_text(text):
+        return str(text).upper().replace("-", "").replace("#", "").replace(" ", "")
+
+    clean_name = clean_text(name)
+
+    for row in range(4, ws.max_row + 1):
+
+        col1 = ws.cell(row=row, column=1).value
+        col2 = ws.cell(row=row, column=2).value
+
+        combined = f"{col1} {col2}"
+        clean_combined = clean_text(combined)
+
+        if clean_name in clean_combined:
+            value = ws.cell(row=row, column=prev_col).value
+
+            if value is None:
+                return 0
+
+            return float(value)
+
+    return 0
+
 # ==============================
 # BASIC SETTINGS
 # ==============================
