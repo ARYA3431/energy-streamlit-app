@@ -200,6 +200,11 @@ if st.button("Submit"):
     prev_bof = get_previous_total(ws, col_index, "TOTAL BOF CONSUMPTION")
     prev_lf = get_previous_total(ws, col_index, "TOTAL LF CONSUMPTION")
     prev_total = get_previous_total(ws, col_index, "Total")
+    prev_pid1 = get_previous_total(ws, col_index, "CONSUMPTION PRIMARY ID FAN #1")
+    prev_pid2 = get_previous_total(ws, col_index, "CONSUMPTION PRIMARY ID FAN #2")
+    prev_sid1 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#1")
+    prev_sid2 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#2")
+    prev_sid3 = get_previous_total(ws, col_index, "CONSUMPTION SECONDARY ID FAN#3")
 
     # ==============================
     # PER DAY
@@ -211,6 +216,7 @@ if st.button("Submit"):
     bof_per_day = total_bof - prev_bof - 0.65*rcph_per_day - lcp_per_day
     lf_per_day = total_lf - prev_lf
     total_energy_per_day = caster_per_day + bof_per_day + lf_per_day
+    
 
     # ==============================
     # SAVE INPUTS
