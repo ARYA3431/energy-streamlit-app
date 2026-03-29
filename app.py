@@ -219,6 +219,7 @@ if st.button("Submit"):
     sid1_per_day = fan_values["SECONDARY ID FAN#1"] - prev_sid1
     sid2_per_day = fan_values["SECONDARY ID FAN#2"] - prev_sid2
     sid3_per_day = fan_values["SECONDARY ID FAN#3"] - prev_sid3
+    total_ID_Fan = pid1_per_day + pid2_per_day + sid1_per_day + sid2_per_day + sid3_per_day
     
      
     
@@ -263,6 +264,7 @@ if st.button("Submit"):
     update_excel(ws, col_index, "CONSUMPTION SECONDARY ID FAN #1", sid1_per_day)
     update_excel(ws, col_index, "CONSUMPTION SECONDARY ID FAN #2", sid2_per_day)
     update_excel(ws, col_index, "CONSUMPTION SECONDARY ID FAN #3", sid3_per_day)
+    update_excel(ws, col_index, "TOTAL ID FAN CONSUMPTION", total_ID_Fan)
 
     # SAVE FILE
     wb.calculation.fullCalcOnLoad = True
