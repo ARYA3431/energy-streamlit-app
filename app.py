@@ -322,6 +322,8 @@ required_keys = [
     "lf_per_day",
     "total_energy_per_day",
     "caster_per_ton",
+    "bof_per_ton",
+    "lf_per_ton",
     "total_per_ton"
 ]
 
@@ -340,6 +342,11 @@ if all(key in st.session_state for key in required_keys):
     col4.metric("TOTAL PER DAY", round(st.session_state["total_energy_per_day"]))
     col5.metric("CASTER PER TON", round(st.session_state["caster_per_ton"], 2))
     col6.metric("TOTAL PER TON", round(st.session_state["total_per_ton"], 2))
+
+    col7, col8 = st.columns(2)
+
+    col7.metric("LF PER TON", round(st.session_state["lf_per_ton"], 2))
+    col8.metric("TOTAL PER TON", round(st.session_state["total_per_ton"], 2))
 
 st.subheader("📊 Energy Data")
 st.dataframe(df, use_container_width=True)
