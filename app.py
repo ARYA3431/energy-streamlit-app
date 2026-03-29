@@ -278,6 +278,12 @@ if st.button("Submit"):
     # SAVE FILE
     wb.calculation.fullCalcOnLoad = True
     wb.save(FILE_NAME)
+    st.session_state["lcp_per_day"] = lcp_per_day
+    st.session_state["caster_per_day"] = caster_per_day
+    st.session_state["bof_per_day"] = bof_per_day
+    st.session_state["lf_per_day"] = lf_per_day
+    st.session_state["caster_per_ton"] = caster_per_ton
+    st.session_state["total_per_ton"] = total_per_ton
 
     st.success("✅ Data Saved Successfully")
 
@@ -308,19 +314,22 @@ df = df.fillna("")
 for col in df.columns[2:]:
     df[col] = df[col].apply(lambda x: int(x) if x != "" else "")
 
-st.subheader("📊 Final Calculated Values")
 
-col1, col2, col3 = st.columns(3)
+if "lcp_per_day" in st.session_state:
 
-col1.metric("LCP PER DAY", int(lcp_per_day))
-col2.metric("CASTER PER DAY", int(caster_per_day))
-col3.metric("BOF PER DAY", int(bof_per_day))
+    st.subheader("📊 Final Calculated Values")
 
-col4, col5, col6 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-col4.metric("LF PER DAY", int(lf_per_day))
-col5.metric("CASTER PER TON", round(caster_per_ton, 2))
-col6.metric("TOTAL PER TON", round(total_per_ton, 2))
+    col1.metric("LCP PER DAY", int(st.session_state["lcp_per_day"]))
+    col2.metric("CASTER PER DAY", int(st.session_state["caster_per_day"]))
+    col3.metric("BOF PER DAY", int(st.session_state["bof_per_day"]))
+
+    col4, col5, col6 = st.columns(3)
+
+    col4.metric("LF PER DAY", int(st.session_state["lf_per_day"]))
+    col5.metric("CASTER PER TON", round(st.session_state["caster_per_ton"], 2))
+    col6.metric("TOTAL PER TON", round(st.session_state["total_per_ton"], 2))
 
 st.subheader("📊 Energy Data")
 st.dataframe(df, use_container_width=True)
