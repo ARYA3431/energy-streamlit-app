@@ -328,7 +328,7 @@ if "caster_per_day" in st.session_state:
 
     col4, col5, col6 = st.columns(3)
 
-    #col4.metric("TOTAL PER DAY", int(st.session_state["total_energy_per_day"]))
+    col4.metric("TOTAL PER DAY", round(st.session_state["total_energy_per_day"]))
     col5.metric("CASTER PER TON", round(st.session_state["caster_per_ton"], 2))
     col6.metric("TOTAL PER TON", round(st.session_state["total_per_ton"], 2))
 
