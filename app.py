@@ -334,31 +334,31 @@ if st.button("Submit"):
 # ==============================
 # HEAT VALUES (OUTSIDE LOOP)
 # ==============================
-    update_excel(ws, col_index, "No. of Heat Tap", heat_values["No. of Heat Tap"])
-    update_excel(ws, col_index, "No. of Heat Cast", heat_values["No. of Heat Cast"])
+        update_excel(ws, col_index, "No. of Heat Tap", heat_values["No. of Heat Tap"])
+        update_excel(ws, col_index, "No. of Heat Cast", heat_values["No. of Heat Cast"])
 
 # ==============================
 # TOTALS (OUTSIDE LOOP)
 # ==============================
 
-    update_excel(ws, col_index, "Total", total_tr)
-    update_excel(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
-    update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
-    update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
-    update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
-    update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
+        update_excel(ws, col_index, "Total", total_tr)
+        update_excel(ws, col_index, "TOTAL LF CONSUMPTION", total_lf)
+        update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
+        update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
+        update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
+        update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
 
 # PER DAY
-    update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
+        update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
     
 # ==============================
 # SAVE (ONLY ONCE)
 # ==============================
 
-    wb.calculation.fullCalcOnLoad = True
-    wb.save(FILE_NAME)
+        wb.calculation.fullCalcOnLoad = True
+        wb.save(FILE_NAME)
 
-    st.success("✅ Data Saved Successfully")
+        st.success("✅ Data Saved Successfully")
 # ==============================
 # DISPLAY DATA (LIVE VIEW)
 # ==============================
