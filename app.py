@@ -171,6 +171,10 @@ total_rcph = sum(rcph_values.values())
 
 heat_tap = heat_values["No. of Heat Tap"]
 heat_cast = heat_values["No. of Heat Cast"]
+# ==============================
+# STEP 3: PER DAY CALCULATION
+# ==============================
+lcp_per_day = total_lcp - lcp_yesterday
 
 per_ton = total_tr / heat_cast if heat_cast > 0 else 0
 
@@ -214,6 +218,8 @@ if st.button("Submit"):
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
 
+    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+
     # UPDATE INPUT VALUES
     for group in [
         tr_values, lhf_values, lcss9_values, lcss8_values,
@@ -221,9 +227,6 @@ if st.button("Submit"):
     ]:
         for key, val in group.items():
             update_excel(ws, col_index, key, val)
-
-
-    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
 
     # HEAT
     update_excel(ws, col_index, "No. of Heat Tap", heat_tap)
@@ -237,6 +240,10 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
     update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
+    # ==============================
+# STEP 4: SAVE PER DAY
+# ==============================
+    update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
 
     # SAVE
     wb.calculation.fullCalcOnLoad = True
