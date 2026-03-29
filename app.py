@@ -218,7 +218,11 @@ if st.button("Submit"):
         col_index = ws.max_column + 1
         ws.cell(row=2, column=col_index).value = today_str
 
+    # ✅ STEP 2
     lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+
+    # ✅ STEP 3 (THIS WAS MISSING)
+    lcp_per_day = total_lcp - lcp_yesterday
 
     # UPDATE INPUT VALUES
     for group in [
@@ -239,10 +243,8 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
-    update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
-    # ==============================
-# STEP 4: SAVE PER DAY
-# ==============================
+
+    # ✅ STEP 4
     update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
 
     # SAVE
@@ -250,7 +252,6 @@ if st.button("Submit"):
     wb.save(FILE_NAME)
 
     st.success("✅ Data Saved Successfully")
-
 # ==============================
 # DISPLAY TABLE
 # ==============================
