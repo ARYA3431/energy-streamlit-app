@@ -220,7 +220,7 @@ if st.button("Submit"):
     # ✅ CALCULATE PER DAY
     # ==============================
     total_lcp = sum(lcp_values.values())   # SAFE inside block
-    lcp_per_day = total_lcp - lcp_yesterday
+    
 
     # ==============================
     # UPDATE INPUT VALUES
