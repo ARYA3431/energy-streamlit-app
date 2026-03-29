@@ -234,11 +234,6 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
     update_excel(ws, col_index, "TOTAL LCP CONSUMPTION", total_lcp)
-    update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
-
-
-    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
-    lcp_per_day = total_lcp - lcp_yesterday
 
     # SAVE
     wb.calculation.fullCalcOnLoad = True
