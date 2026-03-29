@@ -327,7 +327,7 @@ if st.button("Submit"):
     for group in [
             tr_values, lhf_values, lcss9_values, lcss8_values,
             ccm_values, fan_values, rcph_values, lcp_values, other_values
-    ]:
+        ]:
             for key, val in group.items():
                 update_excel(ws, col_index, key, val)
 
