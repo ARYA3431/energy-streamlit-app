@@ -166,7 +166,7 @@ col7, col8 = st.columns(2)
 col7.metric("HEAT TAP", int(heat_tap))
 col8.metric("HEAT CAST", int(heat_cast))
 
-st.metric("PER TON", round(per_ton, 2))
+
 
 # ==============================
 # SUBMIT
