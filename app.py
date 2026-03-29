@@ -147,10 +147,7 @@ total_rcph = sum(rcph_values.values())
 
 heat_tap = heat_values["No. of Heat Tap"]
 heat_cast = heat_values["No. of Heat Cast"]
-caster_per_ton = caster_per_day/(heat_cast*347)
-bof_per_ton = bof_per_day/(heat_tap*347)
-lf_per_ton = lf_per_day/(heat_tap*347)
-total_per_ton = caster_per_ton + bof_per_ton + lf_per_ton
+
 
 # ==============================
 # DISPLAY
