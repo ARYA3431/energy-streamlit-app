@@ -214,6 +214,7 @@ if st.button("Submit"):
     bof_per_day = total_bof - prev_bof - 0.65*rcph_per_day - lcp_per_day
     lf_per_day = total_lf - prev_lf
     total_energy_per_day = caster_per_day + bof_per_day + lf_per_day
+    pid1_per_day = fan_values["PRIMARY ID FAN #1"] - prev_pid1
      
     
 
@@ -252,6 +253,7 @@ if st.button("Submit"):
     update_excel(ws, col_index, "BOF CONSUMPTION PER DAY", bof_per_day)
     update_excel(ws, col_index, "LF CONSUMPTION PER DAY", lf_per_day)
     update_excel(ws, col_index, "TOTAL ENERGY CONSUMPTION PER DAY", total_energy_per_day)
+    update_excel(ws, col_index, "CONSUMPTION PRIMARY ID FAN #1", pid1_per_day)
 
     # SAVE FILE
     wb.calculation.fullCalcOnLoad = True
