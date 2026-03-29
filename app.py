@@ -222,6 +222,9 @@ if st.button("Submit"):
         for key, val in group.items():
             update_excel(ws, col_index, key, val)
 
+
+    lcp_yesterday = get_previous_total(ws, col_index, "TOTAL LCP CONSUMPTION")
+
     # HEAT
     update_excel(ws, col_index, "No. of Heat Tap", heat_tap)
     update_excel(ws, col_index, "No. of Heat Cast", heat_cast)
