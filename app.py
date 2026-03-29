@@ -308,6 +308,20 @@ df = df.fillna("")
 for col in df.columns[2:]:
     df[col] = df[col].apply(lambda x: int(x) if x != "" else "")
 
+st.subheader("📊 Final Calculated Values")
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("LCP PER DAY", int(lcp_per_day))
+col2.metric("CASTER PER DAY", int(caster_per_day))
+col3.metric("BOF PER DAY", int(bof_per_day))
+
+col4, col5, col6 = st.columns(3)
+
+col4.metric("LF PER DAY", int(lf_per_day))
+col5.metric("CASTER PER TON", round(caster_per_ton, 2))
+col6.metric("TOTAL PER TON", round(total_per_ton, 2))
+
 st.subheader("📊 Energy Data")
 st.dataframe(df, use_container_width=True)
 
