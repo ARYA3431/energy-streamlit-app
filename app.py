@@ -258,12 +258,6 @@ if st.button("Submit"):
     update_excel(ws, col_index, "TOTAL CASTER CONSUMPTION", total_caster)
     update_excel(ws, col_index, "TOTAL BOF CONSUMPTION", total_bof)
     update_excel(ws, col_index, "TOTAL RCPH CONSUMPTION", total_rcph)
-
-    # ==============================
-    # ✅ PER DAY SAVE
-    # ==============================
-    update_excel(ws, col_index, "LCP PER DAY CONSUMPTION", lcp_per_day)
-
     # ==============================
     # SAVE
     # ==============================
