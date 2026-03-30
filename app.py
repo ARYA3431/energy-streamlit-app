@@ -135,7 +135,7 @@ st.subheader("⚡ Live Calculation")
 total_tr = sum(tr_values.values()) 
 total_lf = sum(lhf_values.values()) 
 total_lcp = sum(lcp_values.values()) 
-total_caster = ( sum(lcss8_values.values()) + sum(lcss9_values.values()) + sum(ccm_values.values()) + other_values["Grinder I/C Caster(HT36)"] ) 
+total_caster = ( sum(lcss8_values.values()) + sum(lcss9_values.values()) + sum(ccm_values.values()) + other_values["Grinder I/C Caster"] ) 
 total_bof = total_tr - total_lcp - total_caster 
 total_rcph = sum(rcph_values.values())
 heat_tap = heat_values["No. of Heat Tap"]
