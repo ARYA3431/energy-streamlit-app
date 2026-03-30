@@ -3,6 +3,15 @@ import pandas as pd
 import datetime
 import os
 from openpyxl import load_workbook
+import requests
+
+ONEDRIVE_URL = "https://jsw-my.sharepoint.com/:x:/g/personal/asheesh_yadav_jsw_in/IQCw_jYmCsaHQKc6UMRtHlpDATa6B1r-03MhxU3Oxhj1Gc4?e=YQMFal"
+FILE_NAME = "Energy Sheet.xlsx"
+
+def download_file():
+    response = requests.get(ONEDRIVE_URL)
+    with open(FILE_NAME, "wb") as f:
+        f.write(response.content)
 
 # ==============================
 # FILE SETTINGS
@@ -283,7 +292,7 @@ if st.button("Submit"):
 # ==============================
 # DISPLAY TABLE
 # ==============================
-
+download_file()
 wb_data = load_workbook(FILE_NAME, data_only=True)
 ws_data = wb_data[current_month]
 
