@@ -6,9 +6,6 @@ from openpyxl import load_workbook
 import requests
 
 
-FILE_NAME = "Energy Sheet.xlsx"
-
-
 
 # ==============================
 # FILE SETTINGS
