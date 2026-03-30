@@ -292,7 +292,7 @@ if st.button("Submit"):
 # ==============================
 # DISPLAY TABLE
 # ==============================
-download_file()
+
 wb_data = load_workbook(FILE_NAME, data_only=True)
 ws_data = wb_data[current_month]
 
