@@ -8,50 +8,7 @@ import requests
 
 FILE_NAME = "Energy Sheet.xlsx"
 
-from msal import ConfidentialClientApplication
 
-# ==============================
-# ONEDRIVE CONFIG
-# ==============================
-
-CLIENT_ID = "YOUR_CLIENT_ID"
-CLIENT_SECRET = "YOUR_CLIENT_SECRET"
-TENANT_ID = "YOUR_TENANT_ID"
-FILE_ID = "YOUR_FILE_ID"
-
-AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
-SCOPE = ["https://graph.microsoft.com/.default"]
-
-def get_token():
-    app = ConfidentialClientApplication(
-        CLIENT_ID,
-        authority=AUTHORITY,
-        client_credential=CLIENT_SECRET
-    )
-    token = app.acquire_token_for_client(scopes=SCOPE)
-    return token["access_token"]
-
-def download_from_onedrive():
-    token = get_token()
-    url = f"https://graph.microsoft.com/v1.0/me/drive/items/{FILE_ID}/content"
-    headers = {"Authorization": f"Bearer {token}"}
-
-    response = requests.get(url, headers=headers)
-
-    with open(FILE_NAME, "wb") as f:
-        f.write(response.content)
-
-def upload_to_onedrive():
-    token = get_token()
-    url = f"https://graph.microsoft.com/v1.0/me/drive/items/{FILE_ID}/content"
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    }
-
-    with open(FILE_NAME, "rb") as f:
-        requests.put(url, headers=headers, data=f)
 
 # ==============================
 # FILE SETTINGS
@@ -213,7 +170,7 @@ col8.metric("HEAT CAST", int(heat_cast))
 # ==============================
 
 if st.button("Submit"):
-    download_from_onedrive()
+    
     wb = load_workbook(FILE_NAME, data_only=False)
     ws = wb[current_month]
 
@@ -317,7 +274,6 @@ if st.button("Submit"):
     # SAVE FILE
     wb.calculation.fullCalcOnLoad = True
     wb.save(FILE_NAME)
-    upload_to_onedrive()
     st.session_state["caster_per_day"] = caster_per_day
     st.session_state["bof_per_day"] = bof_per_day
     st.session_state["lf_per_day"] = lf_per_day
