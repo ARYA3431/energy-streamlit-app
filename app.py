@@ -4,6 +4,7 @@ import datetime
 import os
 from openpyxl import load_workbook
 import requests
+import msal
 
 FILE_NAME = "Energy Sheet.xlsx"
 
