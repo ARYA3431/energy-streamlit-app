@@ -93,21 +93,21 @@ tr_labels = [
 
 lhf_labels = ["LHF#1", "LHF#2"]
 
-lcss9_labels = ["LCSS-9 FDR-1 (HT25)", "LCSS-9 FDR-3(HT40)", "LCSS-9 FDR-2(HT64)"]
-lcss8_labels = ["LCSS-8 FDR-1(HT24)", "LCSS-8 FDR-3(HT39)", "LCSS-8 FDR-2(HT65)"]
+lcss9_labels = ["LCSS-9 FDR-1", "LCSS-9 FDR-3", "LCSS-9 FDR-2"]
+lcss8_labels = ["LCSS-8 FDR-1", "LCSS-8 FDR-3", "LCSS-8 FDR-2"]
 
-ccm_labels = ["CCM-1 EMS-1(HT04)", "CCM-1 EMS-2(HT45)"]
+ccm_labels = ["CCM-1 EMS-1", "CCM-1 EMS-2"]
 
 fan_labels = [
     "PRIMARY ID FAN #1", "PRIMARY ID FAN #2",
     "SECONDARY ID FAN#1", "SECONDARY ID FAN#2", "SECONDARY ID FAN#3"
 ]
 
-rcph_labels = ["RCPH I/C-1(HT14)", "RCPH I/C-2(HT27)"]
+rcph_labels = ["RCPH I/C-1", "RCPH I/C-2"]
 
-lcp_labels = ["LCP FDR-1(HT33)", "LCP FDR-3(HT12)"]
+lcp_labels = ["LCP FDR-1", "LCP FDR-3"]
 
-other_labels = ["Grinder I/C Caster(HT36)"]
+other_labels = ["Grinder I/C Caster"]
 
 heat_labels = ["No. of Heat Tap", "No. of Heat Cast"]
 
@@ -192,7 +192,7 @@ if st.button("Submit"):
     prev_bof = get_previous_total(ws, col_index, "TOTAL BOF CONSUMPTION")
     prev_lf = get_previous_total(ws, col_index, "TOTAL LF CONSUMPTION")
     prev_total = get_previous_total(ws, col_index, "Total")
-    prev_pid1 = get_previous_total(ws, col_index, "PRIMARY ID FAN #1(HT19)")
+    prev_pid1 = get_previous_total(ws, col_index, "PRIMARY ID FAN #1")
     prev_pid2 = get_previous_total(ws, col_index, "PRIMARY ID FAN #2")
     prev_sid1 = get_previous_total(ws, col_index, "SECONDARY ID FAN#1")
     prev_sid2 = get_previous_total(ws, col_index, "SECONDARY ID FAN#2")
